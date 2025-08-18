@@ -3,79 +3,661 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Uphold Web Monetization (replace with your payment pointer) -->
-    <meta name="monetization" content="$ilp.uphold.com/YOUR_WALLET_ID">
-    <title>Global Insights Hub</title>
+    <meta name="monetization" content="$ilp.uphold.com/MggmnFEyQVWO">
+    <title>Daily Content Hub</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .wm-active { background: #e0f7fa; padding: 10px; border-left: 4px solid #00acc1; }
-        .fallback-monetization { background: #fff8e1; padding: 15px; margin: 20px 0; text-align: center; }
-        .premium-content { background: #f5f5f5; padding: 15px; margin: 15px 0; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3cc;
+            --accent: #6c5ce7;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --accent: #6c5ce7;
+            --glass-bg: rgba(0, 0, 0, 0.05);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--accent), #fd79a8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .controls {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .glass-btn {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 0.8rem 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .glass-btn:hover {
+            background: var(--glass-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px var(--shadow);
+        }
+
+        .theme-toggle {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 5px 20px var(--shadow);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .content-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), #fd79a8, #fdcb6e);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(45deg, var(--accent), #fd79a8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-content {
+            line-height: 1.6;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .quote {
+            font-style: italic;
+            position: relative;
+            padding-left: 1rem;
+            border-left: 3px solid var(--accent);
+        }
+
+        .quote-author {
+            margin-top: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .status-bar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1rem 2rem;
+            text-align: center;
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .floating-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, rgba(108, 92, 231, 0.3), rgba(253, 121, 168, 0.3));
+            animation: float 20s infinite linear;
+        }
+
+        .orb:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            animation-delay: 0s;
+        }
+
+        .orb:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            animation-delay: -7s;
+        }
+
+        .orb:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 80%;
+            animation-delay: -14s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateX(-100px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw + 100px)) rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .monetization-status {
+            animation: pulse 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .controls {
+                position: relative;
+                top: 0;
+                right: 0;
+                justify-content: center;
+                margin-bottom: 2rem;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .status-bar {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .orb {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content-card {
+                padding: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .card-title {
+                font-size: 1.3rem;
+            }
+
+            .card-content {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Global Insights Hub</h1>
-    <p>Discover fascinating content from around the world</p>
-
-    <!-- Web Monetization Status -->
-    <div id="wm-status" class="wm-active">
-        Web Monetization: <span id="wm-state">Checking...</span>
+    <div class="floating-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
     </div>
 
-    <!-- Fallback if WM not supported -->
-    <div id="fallback-monetization" class="fallback-monetization" style="display: none;">
-        <p>Enjoying this content? Support me via:</p>
-        <a href="https://www.buymeacoffee.com/yourpage" target="_blank">
-            <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=yourpage" alt="Buy Me A Coffee">
-        </a>
-        <p>or disable your ad blocker for optional ads.</p>
-    </div>
+    <div class="container">
+        <div class="controls">
+            <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+            <button class="glass-btn" id="monetizationBtn" onclick="handleMonetization()">
+                <span id="monetizationText">💎 Support</span>
+            </button>
+        </div>
 
-    <!-- Dynamic Content Loaded Here -->
-    <div id="content-container">
-        <p>Loading today's insights...</p>
-    </div>
+        <div class="header">
+            <h1>Daily Discovery</h1>
+            <p>Fresh content curated for curious minds</p>
+        </div>
 
-    <!-- EthicalAds Fallback (if no WM) -->
-    <div id="ad-container" style="display: none; margin: 20px 0; text-align: center;">
-        <script async src="https://media.ethicalads.io/media/client/ethicalads.min.js"></script>
-        <div data-ea-publisher="your-publisher-id" data-ea-type="image"></div>
+        <div class="main-content" id="contentContainer">
+            <!-- Content will be injected here -->
+        </div>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <span>📅</span>
+                <span id="currentDate"></span>
+            </div>
+            <div class="status-item">
+                <span>🔄</span>
+                <span>Auto-rotates daily</span>
+            </div>
+            <div class="status-item monetization-status">
+                <span>💰</span>
+                <span id="monetizationStatus">Web Monetization Ready</span>
+            </div>
+        </div>
     </div>
 
     <script>
-        // 1. Check Web Monetization Support
-        if (document.monetization) {
-            document.monetization.addEventListener('monetizationstart', () => {
-                document.getElementById("wm-state").textContent = "Active (Thank you!)";
-                showPremiumContent();
-            });
-            document.monetization.addEventListener('monetizationstop', () => {
-                document.getElementById("wm-state").textContent = "Inactive";
-                showFallbackOptions();
-            });
-        } else {
-            document.getElementById("wm-state").textContent = "Not supported";
-            showFallbackOptions();
+        // Content database organized by categories
+        const contentData = {
+            techFacts: [
+                {
+                    title: "🚀 Tech Innovation",
+                    content: "The first computer bug was an actual bug - a moth trapped in a Harvard Mark II computer in 1947. Grace Hopper, the operator who found it, taped the moth into the computer's logbook and wrote 'First actual case of bug being found.'"
+                },
+                {
+                    title: "🚀 Tech Innovation", 
+                    content: "There are more possible games of chess than atoms in the observable universe. The number of possible chess games is estimated at 10^120, while there are only about 10^80 atoms in the observable universe."
+                },
+                {
+                    title: "🚀 Tech Innovation",
+                    content: "The first 1GB hard drive, IBM 3380, was released in 1980 and cost $40,000 ($140,000 in today's money). It was the size of a refrigerator and weighed 550 pounds."
+                },
+                {
+                    title: "🚀 Tech Innovation",
+                    content: "WiFi was invented by accident in 1990 when Australian scientists were trying to detect black holes. The technology they developed for radio astronomy became the foundation for wireless internet."
+                },
+                {
+                    title: "🚀 Tech Innovation",
+                    content: "The '@' symbol was chosen for email addresses because it was the only preposition available on the keyboard, and Ray Tomlinson needed something to separate the user name from the computer name."
+                }
+            ],
+            quotes: [
+                {
+                    title: "💭 Daily Wisdom",
+                    content: "The only way to do great work is to love what you do. If you haven't found it yet, keep looking. Don't settle.",
+                    author: "Steve Jobs"
+                },
+                {
+                    title: "💭 Daily Wisdom",
+                    content: "Innovation distinguishes between a leader and a follower. The desktop metaphor was a revolutionary way to make technology accessible to everyone.",
+                    author: "Steve Jobs"
+                },
+                {
+                    title: "💭 Daily Wisdom", 
+                    content: "The future belongs to those who believe in the beauty of their dreams. Every great achievement was once considered impossible.",
+                    author: "Eleanor Roosevelt"
+                },
+                {
+                    title: "💭 Daily Wisdom",
+                    content: "Success is not final, failure is not fatal: it is the courage to continue that counts. Persistence beats resistance always.",
+                    author: "Winston Churchill"
+                },
+                {
+                    title: "💭 Daily Wisdom",
+                    content: "Be yourself; everyone else is already taken. Authenticity is the daily practice of letting go of who we think we're supposed to be.",
+                    author: "Oscar Wilde"
+                }
+            ],
+            scienceFacts: [
+                {
+                    title: "🔬 Science Discovery",
+                    content: "Octopuses have three hearts and blue blood. Two hearts pump blood to the gills, while the third pumps blood to the rest of the body. Their blue blood comes from copper-based hemocyanin instead of iron-based hemoglobin."
+                },
+                {
+                    title: "🔬 Science Discovery",
+                    content: "A day on Venus is longer than its year. Venus rotates so slowly that one Venus day (243 Earth days) is longer than one Venus year (225 Earth days)."
+                },
+                {
+                    title: "🔬 Science Discovery",
+                    content: "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly edible. Its low moisture content and acidic pH create a hostile environment for bacteria."
+                },
+                {
+                    title: "🔬 Science Discovery", 
+                    content: "Your brain uses about 20% of your body's total energy, despite being only 2% of your body weight. It consumes roughly 12 watts of power - about the same as a dim light bulb."
+                },
+                {
+                    title: "🔬 Science Discovery",
+                    content: "Bananas are radioactive due to their high potassium content. You'd need to eat 10 million bananas at once to die from radiation poisoning - but you'd die from potassium overdose first."
+                }
+            ],
+            historyFacts: [
+                {
+                    title: "📜 History Insight",
+                    content: "The Great Wall of China isn't visible from space with the naked eye, contrary to popular belief. This myth was debunked by astronauts who confirmed that many human-made structures are more visible than the wall."
+                },
+                {
+                    title: "📜 History Insight",
+                    content: "Cleopatra lived closer in time to the moon landing (1969) than to the construction of the Great Pyramid of Giza. The pyramid was built around 2580 BC, while Cleopatra lived from 69-30 BC."
+                },
+                {
+                    title: "📜 History Insight",
+                    content: "The shortest war in history lasted only 38-45 minutes. The Anglo-Zanzibar War of 1896 ended when the Sultan's palace was bombarded and his flag shot down."
+                },
+                {
+                    title: "📜 History Insight",
+                    content: "Oxford University is older than the Aztec Empire. Oxford was founded around 1096, while the Aztec Empire was established in 1345."
+                },
+                {
+                    title: "📜 History Insight",
+                    content: "The ancient Romans used urine as mouthwash because they believed it whitened teeth. The ammonia in urine does have mild cleaning properties, though we don't recommend this method today."
+                }
+            ]
+        };
+
+        // Initialize theme based on system preference
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            const theme = savedTheme || systemTheme;
+            
+            document.documentElement.setAttribute('data-theme', theme);
+            updateThemeIcon(theme);
         }
 
-        // 2. Fallback: Show Ads/Donations if no WM
-        function showFallbackOptions() {
-            document.getElementById("fallback-monetization").style.display = "block";
-            document.getElementById("ad-container").style.display = "block";
+        // Toggle between dark and light themes
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
         }
 
-        // 3. Load Dynamic Content (from JSON)
-        async function loadContent() {
-            const response = await fetch('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/content.json');
-            const data = await response.json();
-            const today = new Date().getDay() % data.content.length; // Cycle content daily
-            document.getElementById("content-container").innerHTML = `
-                <h2>${data.content[today].title}</h2>
-                <p>${data.content[today].freeContent}</p>
-                ${data.content[today].image ? `<img src="${data.content[today].image}" width="100%">` : ''}
-            `;
+        // Update theme toggle icon
+        function updateThemeIcon(theme) {
+            const themeToggle = document.querySelector('.theme-toggle');
+            themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
         }
-        loadContent();
+
+        // Get day-based index for content rotation
+        function getDayBasedIndex(arrayLength) {
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+            return dayOfYear % arrayLength;
+        }
+
+        // Render daily content
+        function renderDailyContent() {
+            const container = document.getElementById('contentContainer');
+            const categories = Object.keys(contentData);
+            
+            container.innerHTML = '';
+
+            categories.forEach((category, index) => {
+                const items = contentData[category];
+                const selectedIndex = getDayBasedIndex(items.length);
+                const item = items[selectedIndex];
+                
+                const card = document.createElement('div');
+                card.className = 'content-card';
+                card.style.animationDelay = `${index * 0.2}s`;
+                
+                let contentHTML = '';
+                if (item.author) {
+                    // Quote format
+                    contentHTML = `
+                        <div class="quote">${item.content}</div>
+                        <div class="quote-author">— ${item.author}</div>
+                    `;
+                } else {
+                    // Fact format
+                    contentHTML = `<div>${item.content}</div>`;
+                }
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-icon">${getIconForCategory(category)}</div>
+                        <div class="card-title">${item.title}</div>
+                    </div>
+                    <div class="card-content">
+                        ${contentHTML}
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Get appropriate icon for content category
+        function getIconForCategory(category) {
+            const icons = {
+                techFacts: '💻',
+                quotes: '💭', 
+                scienceFacts: '🔬',
+                historyFacts: '📜'
+            };
+            return icons[category] || '✨';
+        }
+
+        // Handle web monetization and fallback
+        function handleMonetization() {
+            // Check if web monetization is active
+            if (document.monetization && document.monetization.state === 'started') {
+                alert('💚 Web Monetization is active! Thank you for your support!');
+            } else {
+                // Fallback for browsers without web monetization
+                const isSupported = confirm(
+                    '💎 Support this content!\n\n' +
+                    'Web Monetization is not detected in your browser.\n' +
+                    'Would you like to learn more about supporting content creators?'
+                );
+                
+                if (isSupported) {
+                    window.open('https://webmonetization.org/', '_blank');
+                }
+            }
+        }
+
+        // Update monetization status
+        function updateMonetizationStatus() {
+            const statusElement = document.getElementById('monetizationStatus');
+            const btnElement = document.getElementById('monetizationText');
+            
+            if (document.monetization) {
+                document.monetization.addEventListener('monetizationstart', () => {
+                    statusElement.textContent = 'Monetization Active ✓';
+                    btnElement.textContent = '💚 Thanks!';
+                });
+                
+                document.monetization.addEventListener('monetizationstop', () => {
+                    statusElement.textContent = 'Monetization Stopped';
+                    btnElement.textContent = '💎 Support';
+                });
+            } else {
+                statusElement.textContent = 'Monetization Not Supported';
+            }
+        }
+
+        // Update current date display
+        function updateDate() {
+            const dateElement = document.getElementById('currentDate');
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            dateElement.textContent = new Date().toLocaleDateString('en-US', options);
+        }
+
+        // Listen for system theme changes
+        function setupThemeListener() {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    const newTheme = e.matches ? 'dark' : 'light';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    updateThemeIcon(newTheme);
+                }
+            });
+        }
+
+        // Initialize the application
+        function initialize() {
+            initializeTheme();
+            setupThemeListener();
+            renderDailyContent();
+            updateDate();
+            updateMonetizationStatus();
+            
+            // Update date every minute
+            setInterval(updateDate, 60000);
+        }
+
+        // Start the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initialize);
     </script>
 </body>
 </html>
