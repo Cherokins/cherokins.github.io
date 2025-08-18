@@ -1,4 +1,4 @@
-// === Codex of Hidden Knowledge (Endless Version) ===
+// === Codex of Hidden Knowledge (Endless + Coil Unlock) ===
 
 // Word pools
 const adjectives = ["silent", "burning", "hidden", "eternal", "forgotten", "shattered", "ancient", "veiled", "iron", "crimson", "hollow", "obsidian", "sacred"];
@@ -7,7 +7,10 @@ const verbs = ["guards", "awakens", "consumes", "shatters", "seeks", "binds", "b
 const objects = ["seal", "gate", "memory", "circle", "crown", "labyrinth", "sword", "mask", "flame", "void", "temple", "oath"];
 const mysteries = ["prophecy", "truth", "dream", "path", "destiny", "curse", "key", "hourglass", "sigil"];
 
-// Random picker
+// State to track monetization
+let monetized = false;
+
+// Random selector
 function random(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -22,23 +25,25 @@ function generateEntry() {
     `In the echo of ${random(objects)}, the ${random(creatures)} waits.`,
     `The ${random(mysteries)} belongs to the ${random(adjectives)} ${random(creatures)}.`
   ];
-
   return templates[Math.floor(Math.random() * templates.length)];
 }
 
-// Create and insert an entry element
+// Create entry element
 function createEntryElement(text, type = "free") {
   const div = document.createElement("div");
   div.className = `entry ${type}`;
-  div.innerHTML = type === "locked" ? `🔒 ${text}` : text;
 
-  // trigger fade-in
+  if (type === "locked" && !monetized) {
+    div.innerHTML = `🔒 A secret lies hidden here...`;
+  } else {
+    div.innerHTML = text;
+  }
+
   setTimeout(() => div.classList.add("visible"), 100);
-
   return div;
 }
 
-// Insert batch of entries
+// Insert entries
 function insertEntries(count = 10) {
   const container = document.getElementById("entries");
   for (let i = 0; i < count; i++) {
@@ -48,14 +53,29 @@ function insertEntries(count = 10) {
   }
 }
 
+// Unlock previously locked entries if monetization starts
+function unlockEntries() {
+  document.querySelectorAll(".entry.locked").forEach(el => {
+    el.innerHTML = generateEntry(); // reveal with new text
+  });
+}
+
 // Infinite scroll
 window.addEventListener("scroll", () => {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-    insertEntries(10); // load more as you near the bottom
+    insertEntries(10);
   }
 });
 
+// Web Monetization API listener
+if (document.monetization) {
+  document.monetization.addEventListener("monetizationstart", () => {
+    monetized = true;
+    unlockEntries();
+  });
+}
+
 // Initial load
 window.onload = () => {
-  insertEntries(20); // show first entries
+  insertEntries(20);
 };
