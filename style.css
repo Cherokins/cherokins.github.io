@@ -72,3 +72,34 @@ footer {
   color: #777;
   font-size: 0.9rem;
 }
+/* Locked entries look tempting */
+.entry.locked {
+  position: relative;
+  color: transparent;
+  text-shadow: 0 0 8px rgba(200, 50, 200, 0.8); /* glowing hint */
+  background: linear-gradient(90deg, rgba(30,30,30,0.9), rgba(60,0,60,0.6));
+  border-left: 4px solid #b5179e;
+  font-style: italic;
+  overflow: hidden;
+  cursor: not-allowed;
+}
+
+.entry.locked::before {
+  content: "🔒 Hidden Knowledge (Unlock via Coil)";
+  color: #ff99ff;
+  text-shadow: 0 0 12px #ff00ff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.1em;
+  white-space: nowrap;
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.95); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+  100% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.95); }
+}
+
