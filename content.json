@@ -1,0 +1,24 @@
+{
+    "content": [
+        {
+            "title": "The Art of Japanese Tea Ceremony",
+            "freeContent": "The Japanese tea ceremony, called chanoyu or sado, is a cultural activity involving the ceremonial preparation and presentation of matcha, powdered green tea. It's a choreographic ritual of preparing and serving Japanese green tea.",
+            "image": "https://images.unsplash.com/photo-1563906267088-b916e8e7dee3?w=600"
+        },
+        {
+            "title": "Brazil's Amazon Rainforest",
+            "freeContent": "The Amazon rainforest covers about 40% of Brazil's territory and is home to approximately 400 billion individual trees representing 16,000 species. It produces about 20% of Earth's oxygen.",
+            "image": "https://images.unsplash.com/photo-1619546813926-a78fa7730f51?w=600"
+        },
+        {
+            "title": "The History of Egyptian Pyramids",
+            "freeContent": "The Egyptian pyramids are ancient masonry structures located in Egypt. Sources cite at least 118 identified Egyptian pyramids. Most were built as tombs for the country's pharaohs and their consorts during the Old and Middle Kingdom periods.",
+            "image": "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=600"
+        },
+        {
+            "title": "Traditional Maori Culture",
+            "freeContent": "The Maori are the indigenous Polynesian people of mainland New Zealand. Maori culture forms a distinctive part of New Zealand culture and includes traditional arts like whakairo (carving), raranga (weaving), kapa haka (group performance), and moko (tattooing).",
+            "image": "https://images.unsplash.com/photo-1582481725274-d6c8b02f13c3?w=600"
+        }
+    ]
+}
