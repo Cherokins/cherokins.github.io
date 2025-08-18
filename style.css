@@ -1,84 +1,74 @@
-/* General reset */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* === General Reset === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #0a0a0f;
-  color: #e0e0e0;
+  background: #0a0a0a;
+  color: #e6e6e6;
+  font-family: 'Georgia', serif;
   line-height: 1.6;
   padding: 0 1rem;
 }
 
+/* === Header === */
 header {
   text-align: center;
-  padding: 3rem 1rem 2rem;
+  padding: 2rem 1rem;
+  border-bottom: 1px solid #333;
 }
 
-h1 {
-  font-size: 2.5rem;
-  color: #fff;
-  text-shadow: 0 0 8px #0ff;
+header h1 {
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+  color: #ffcc66;
+  text-shadow: 0 0 10px #ffcc66;
 }
 
-.subtitle {
-  color: #aaa;
+.tagline {
   margin-top: 0.5rem;
+  color: #999;
+  font-style: italic;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  padding-bottom: 3rem;
+/* === Entries === */
+#entries {
+  margin: 2rem auto;
+  max-width: 700px;
 }
 
-.card {
-  background: #14141c;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 255, 255, 0.15);
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.25);
-}
-
-.card h3 {
-  margin-bottom: 0.8rem;
-  font-size: 1.2rem;
-  color: #0ff;
-}
-
-.muted {
-  color: #bbb;
-}
-
-/* Locked cards */
-.locked {
-  filter: blur(3px) brightness(0.7);
-  position: relative;
-}
-
-.locked::after {
-  content: "🔒 Premium — Unlock with Coil";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #ff0;
-  font-weight: bold;
-  text-shadow: 0 0 6px #000;
-  background: rgba(0,0,0,0.6);
-  padding: 0.3rem 0.6rem;
+.entry {
+  background: rgba(20, 20, 20, 0.9);
+  border: 1px solid #333;
   border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
 }
 
-/* Footer */
+.entry.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.entry.free {
+  color: #e6e6e6;
+}
+
+.entry.locked {
+  color: #ff6666;
+  font-style: italic;
+}
+
+/* === Footer === */
 footer {
   text-align: center;
-  padding: 2rem;
-  color: #555;
+  padding: 2rem 0;
+  border-top: 1px solid #333;
+  color: #777;
   font-size: 0.9rem;
 }
