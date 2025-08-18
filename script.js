@@ -35,14 +35,17 @@ const entries = [
 // DOM references
 const entriesContainer = document.getElementById('entries');
 const loader = document.getElementById('loader');
+const footer = document.getElementById('footer');
+const title = document.getElementById('title');
+const whisperBox = document.getElementById('whisper');
 
 let index = 0;
-const batchSize = 6; // load per scroll
+const batchSize = 6;
 
 // Function to render entries
 function loadEntries() {
   for (let i = 0; i < batchSize; i++) {
-    const entry = entries[index % entries.length]; // loop endlessly
+    const entry = entries[index % entries.length];
     const div = document.createElement('div');
     div.className = 'entry' + (entry.locked ? ' locked' : '');
     div.innerHTML = `<p>${entry.text}</p>`;
@@ -60,3 +63,57 @@ window.addEventListener('scroll', () => {
 
 // Initial load
 loadEntries();
+
+/* ============ Easter Eggs ============ */
+
+// 1. Konami Code unlock all
+const konami = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+let pos = 0;
+window.addEventListener("keydown", (e) => {
+  if (e.key === konami[pos]) {
+    pos++;
+    if (pos === konami.length) {
+      document.querySelectorAll('.entry.locked').forEach(el => el.classList.remove('locked'));
+      alert("🔓 The Codex unlocks its secrets!");
+      pos = 0;
+    }
+  } else {
+    pos = 0;
+  }
+});
+
+// 2. Footer click secret
+let footerClicks = 0;
+footer.addEventListener("click", () => {
+  footerClicks++;
+  if (footerClicks === 7) {
+    const div = document.createElement('div');
+    div.className = 'entry';
+    div.style.background = "#220022";
+    div.style.color = "#ff66ff";
+    div.innerHTML = `<p>✨ The Codex sees you.</p>`;
+    entriesContainer.prepend(div);
+    footerClicks = 0;
+  }
+});
+
+// 3. Title hover pulse
+title.addEventListener("mouseenter", () => title.classList.add("pulse"));
+title.addEventListener("mouseleave", () => title.classList.remove("pulse"));
+
+// 4. Random whispers
+const whispers = [
+  "Do you hear it too?",
+  "The Codex breathes.",
+  "Not all pages are written in ink.",
+  "The eyes in the dark are not always hostile.",
+  "Listen between the lines."
+];
+
+function showWhisper() {
+  const text = whispers[Math.floor(Math.random() * whispers.length)];
+  whisperBox.textContent = text;
+  whisperBox.style.opacity = 1;
+  setTimeout(() => whisperBox.style.opacity = 0, 8000);
+}
+setInterval(showWhisper, 45000); // every 45s
