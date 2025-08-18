@@ -1,13 +1,13 @@
 // === Codex of Hidden Knowledge (Endless Version) ===
 
-// Word pools to generate phrases
+// Word pools
 const adjectives = ["silent", "burning", "hidden", "eternal", "forgotten", "shattered", "ancient", "veiled", "iron", "crimson", "hollow", "obsidian", "sacred"];
 const creatures = ["serpent", "raven", "shadow", "wanderer", "oracle", "twin flame", "wolf", "phantom", "scribe", "guardian", "mirror"];
 const verbs = ["guards", "awakens", "consumes", "shatters", "seeks", "binds", "betrays", "remembers", "conceals", "reveals"];
 const objects = ["seal", "gate", "memory", "circle", "crown", "labyrinth", "sword", "mask", "flame", "void", "temple", "oath"];
 const mysteries = ["prophecy", "truth", "dream", "path", "destiny", "curse", "key", "hourglass", "sigil"];
 
-// Function to randomly pick from arrays
+// Random picker
 function random(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -38,6 +38,24 @@ function createEntryElement(text, type = "free") {
   return div;
 }
 
-// Insert batch
+// Insert batch of entries
+function insertEntries(count = 10) {
+  const container = document.getElementById("entries");
+  for (let i = 0; i < count; i++) {
+    const text = generateEntry();
+    const type = Math.random() > 0.7 ? "locked" : "free"; // ~30% locked
+    container.appendChild(createEntryElement(text, type));
+  }
+}
 
+// Infinite scroll
+window.addEventListener("scroll", () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+    insertEntries(10); // load more as you near the bottom
+  }
+});
 
+// Initial load
+window.onload = () => {
+  insertEntries(20); // show first entries
+};
