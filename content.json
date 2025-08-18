@@ -22,3 +22,18 @@
         }
     ]
 }
+{
+    "content": [
+        {
+            "title": "The Future of AI",
+            "freeContent": "Latest breakthroughs in artificial intelligence...",
+            "image": "https://example.com/ai.jpg"
+        },
+        {
+            "title": "Hidden Travel Gems",
+            "freeContent": "Underrated places to visit in 2024...",
+            "image": "https://example.com/travel.jpg"
+        }
+    ]
+}
+
