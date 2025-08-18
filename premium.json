@@ -1,0 +1,28 @@
+{
+    "premiumContent": [
+        {
+            "items": [
+                {
+                    "title": "Secret Technique",
+                    "description": "The precise water temperature for perfect matcha is 70°C (158°F), not boiling as many believe."
+                },
+                {
+                    "title": "Rare Fact",
+                    "description": "The most expensive tea ceremony bowl sold for $2.2 million at auction in 2017."
+                }
+            ]
+        },
+        {
+            "items": [
+                {
+                    "title": "Hidden Tribe",
+                    "description": "The Awá people are an isolated indigenous group in the Amazon with only about 100 members remaining."
+                },
+                {
+                    "title": "Medical Discovery",
+                    "description": "Scientists recently found a fungus in the Amazon that can break down polyurethane plastic."
+                }
+            ]
+        }
+    ]
+}
