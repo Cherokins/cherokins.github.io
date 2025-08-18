@@ -1,46 +1,84 @@
+/* === Base Layout === */
+* { box-sizing: border-box; }
+
 body {
+  margin: 0;
   background: #0d0d0d;
   color: #e0e0e0;
-  font-family: 'Georgia', serif;
-  margin: 0;
-  padding: 0;
+  font-family: Georgia, serif;
   display: flex;
   justify-content: center;
 }
 
 .codex {
-  max-width: 700px;
-  padding: 2rem;
+  max-width: 760px;
+  padding: 2rem 1.25rem 3rem;
 }
 
 h1 {
   text-align: center;
   color: #ffcc66;
   text-shadow: 0 0 12px #ffcc66;
+  margin: 0 0 1rem;
 }
 
+#entries {}
+
+/* === Entries === */
 .entry {
   margin: 1rem 0;
-  padding: 1rem;
+  padding: 1rem 1.1rem;
   border-left: 4px solid #ffcc66;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 8px;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+.entry:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
 
-.entry:hover {
-  transform: scale(1.02);
-}
-
-.entry.locked {
-  color: #888;
-  text-shadow: 0 0 6px #ff0099;
-  background: rgba(20, 0, 20, 0.4);
+/* Tagline below locked placeholders */
+.tagline {
+  font-size: 0.92rem;
+  margin-top: 8px;
+  opacity: 0.78;
   font-style: italic;
-  border-left: 4px solid #ff0099;
+  color: #bbb;
+}
+
+/* === Locked styling: glowing ward + rotating rune === */
+.entry.locked {
+  position: relative;
+  border: 1px solid rgba(200, 200, 255, 0.3);
+  border-left-color: #b5179e;
+  background: linear-gradient(90deg, rgba(20,20,28,0.9), rgba(60,0,60,0.35));
+  box-shadow: 0 0 8px rgba(120, 180, 255, 0.35);
+  animation: pulseGlow 3s infinite ease-in-out;
+  overflow: hidden;
   cursor: not-allowed;
 }
 
-#sentinel {
-  height: 40px;
+/* Use the rune + color from data attributes */
+.entry.locked::before {
+  content: attr(data-rune);
+  position: absolute;
+  font-size: 2.8rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: attr(data-rune-color color, rgba(140,180,255,0.25));
+  pointer-events: none;
+  animation: runeSpin 12s linear infinite;
 }
+
+/* Breathing glow + rune spin */
+@keyframes pulseGlow {
+  0%   { box-shadow: 0 0 6px rgba(120, 180, 255, 0.25); }
+  50%  { box-shadow: 0 0 18px rgba(120, 180, 255, 0.6); }
+  100% { box-shadow: 0 0 6px rgba(120, 180, 255, 0.25); }
+}
+@keyframes runeSpin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Footer spacing (if any) */
+footer { color:#777; text-align:center; padding:2rem 0 1rem; }
