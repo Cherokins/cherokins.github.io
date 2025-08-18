@@ -1,173 +1,93 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Codex Hub</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Codex of Hidden Knowledge</title>
 
-<!-- Google Fonts & Font Awesome -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Coil / Web Monetization (replace with your real pointer later) -->
+  <meta name="monetization" content="$wallet.example.com/yourname" />
 
-<style>
-  /* Reset & Base */
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:'Roboto',sans-serif;background:#0f0f0f;color:#fff;line-height:1.6;}
-  a{text-decoration:none;color:inherit;}
-  img{max-width:100%;display:block;}
-
-  /* Header */
-  header{position:sticky;top:0;background:#111;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;z-index:100;}
-  .logo{font-size:1.8rem;font-weight:700;color:#facc15;text-shadow:0 0 10px #facc15;}
-  nav ul{display:flex;gap:1.5rem;list-style:none;}
-  nav ul li a{color:#fff;font-weight:500;transition:0.3s;}
-  nav ul li a:hover{color:#facc15;}
-  .menu-toggle{display:none;font-size:1.8rem;cursor:pointer;}
-
-  /* Hero Section */
-  .hero{height:90vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('https://source.unsplash.com/1600x900/?tech,coding')center/cover no-repeat;}
-  .hero h1{font-size:3rem;margin-bottom:1rem;color:#facc15;text-shadow:0 0 15px #facc15;}
-  .hero p{font-size:1.3rem;margin-bottom:2rem;}
-  .btn-glow{padding:0.8rem 2rem;font-weight:700;font-size:1rem;color:#fff;background:#facc15;border:none;border-radius:10px;cursor:pointer;box-shadow:0 0 10px #facc15,0 0 20px #facc15;transition:0.3s;text-transform:uppercase;}
-  .btn-glow:hover{box-shadow:0 0 20px #facc15,0 0 40px #facc15;transform:translateY(-3px);}
-
-  /* Sections */
-  section{padding:4rem 2rem;}
-  .section-title{font-size:2rem;color:#facc15;margin-bottom:2rem;text-align:center;text-shadow:0 0 8px #facc15;}
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem;}
-  .card{background:#1a1a1a;padding:2rem;border-radius:15px;box-shadow:0 0 20px rgba(250,202,21,0.3);transition:0.3s;text-align:center;}
-  .card:hover{transform:translateY(-5px);box-shadow:0 0 30px #facc15;}
-  .card i{font-size:2rem;color:#facc15;margin-bottom:1rem;}
-
-  /* Locked Content */
-  .locked{background:#111;padding:1.5rem;margin-top:1rem;border:2px dashed #facc15;border-radius:12px;text-align:center;cursor:pointer;transition:0.3s;}
-  .locked:hover{box-shadow:0 0 20px #facc15;}
-
-  /* Footer */
-  footer{background:#111;padding:2rem;text-align:center;color:#fff;}
-  footer p{margin-bottom:1rem;}
-  .socials a{margin:0 0.5rem;color:#fff;font-size:1.2rem;transition:0.3s;}
-  .socials a:hover{color:#facc15;}
-
-  /* Floating WhatsApp */
-  .whatsapp-btn{position:fixed;bottom:20px;right:20px;background:#25D366;color:#fff;padding:1rem;border-radius:50%;font-size:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:1000;transition:0.3s;}
-  .whatsapp-btn:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,0.3);}
-
-  /* Coil Popup */
-  #coil-popup{animation:pulse 2s infinite; cursor:pointer;}
-  @keyframes pulse{
-    0%{box-shadow:0 0 10px #facc15,0 0 20px #facc15;}
-    50%{box-shadow:0 0 20px #facc15,0 0 40px #facc15;}
-    100%{box-shadow:0 0 10px #facc15,0 0 20px #facc15;}
-  }
-
-  /* Responsive */
-  @media(max-width:768px){
-    nav ul{display:none;flex-direction:column;background:#111;position:absolute;top:100%;right:0;width:200px;padding:1rem;}
-    nav ul.active{display:flex;}
-    .menu-toggle{display:block;}
-  }
-</style>
+  <style>
+    :root { --bg:#0b0b0f; --fg:#e9ecf1; --muted:#9aa3ad; --accent:#7cf7d2; }
+    * { box-sizing: border-box; }
+    html,body { margin:0; padding:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial; }
+    a { color: var(--accent); text-decoration: none; }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 28px 20px 80px; }
+    .hero { padding: 36px 0 18px; }
+    .tag { display:inline-block; font-size:12px; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; }
+    h1 { margin: 6px 0 10px; font-size: clamp(28px, 6vw, 52px); line-height: 1.1; }
+    .sub { color: var(--muted); max-width: 60ch; }
+    .btn { display:inline-block; margin-top:18px; padding:12px 18px; border:1px solid rgba(124,247,210,.45); border-radius:14px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:28px; }
+    .card { padding:16px; border:1px solid rgba(255,255,255,.08); border-radius:16px; background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)); }
+    .glow { box-shadow: 0 0 24px rgba(124,247,210,.15); border-color: rgba(124,247,210,.35); }
+    .muted { color: var(--muted); }
+    .locked { position: relative; }
+    .locked::after {
+      content: "⚡ Supporters unlock this";
+      position: absolute; inset: 0; display:grid; place-items:center;
+      background: rgba(11,11,15,.72); color: var(--accent);
+      border-radius:16px; backdrop-filter: blur(3px);
+    }
+    .floating {
+      position: fixed; right: 16px; bottom: 16px; z-index: 10;
+      padding: 12px 14px; border-radius: 999px; border:1px solid rgba(255,255,255,.12);
+      background: #101218; box-shadow: 0 8px 30px rgba(0,0,0,.35);
+    }
+  </style>
 </head>
 <body>
-
-<header>
-  <div class="logo">Codex Hub</div>
-  <i class="fas fa-bars menu-toggle"></i>
-  <ul>
-    <li><a href="#">Home</a></li>
-    <li><a href="#">Courses</a></li>
-    <li><a href="#">Resources</a></li>
-    <li><a href="#">About</a></li>
-    <li><a href="#">Contact</a></li>
-  </ul>
-</header>
-
-<section class="hero">
-  <h1>Welcome to Codex Hub ⚡</h1>
-  <p>All-in-one tech learning and coding playground with exclusive perks for members.</p>
-  <button class="btn-glow">Get Started</button>
-</section>
-
-<section>
-  <h2 class="section-title">Our Courses</h2>
-  <div class="cards">
-    <div class="card">
-      <i class="fas fa-code"></i>
-      <h3>Web Development</h3>
-      <p>HTML, CSS, JS, React and more. Build projects that shine.</p>
+  <div class="wrap">
+    <div class="hero">
+      <span class="tag">The Codex</span>
+      <h1>Hidden Knowledge for the Curious.</h1>
+      <p class="sub">Short, powerful ideas from ancient wisdom and modern science. Keep scrolling; your next insight is one card away.</p>
+      <a class="btn" href="#stream">Start reading →</a>
     </div>
-    <div class="card">
-      <i class="fas fa-database"></i>
-      <h3>Backend Dev</h3>
-      <p>Node.js, Python, Databases — master server-side skills.</p>
-    </div>
-    <div class="card">
-      <i class="fas fa-robot"></i>
-      <h3>AI & Machine Learning</h3>
-      <p>From basics to advanced ML models and real-world applications.</p>
+
+    <div id="stream" class="grid">
+      <!-- Free entries -->
+      <article class="card">
+        <h3>Memento Mori</h3>
+        <p class="muted">Remembering mortality clarifies priorities. Ask: “If this were my last year, would I still do this?”</p>
+      </article>
+      <article class="card">
+        <h3>20-Minute Light Rule</h3>
+        <p class="muted">Morning outdoor light boosts mood, focus, and sleep quality. Treat it like a daily meeting.</p>
+      </article>
+
+      <!-- Supporters-only (revealed if Coil is active) -->
+      <article id="premium-1" class="card locked">
+        <h3>The Spartan Reset</h3>
+        <p class="muted">A 3-step micro-ritual to snap out of distraction in under 90 seconds.</p>
+      </article>
+      <article id="premium-2" class="card locked">
+        <h3>Samurai Focus Drill</h3>
+        <p class="muted">Train single-point attention with a 9-breath cycle. Results in 7 days.</p>
+      </article>
     </div>
   </div>
-</section>
 
-<section>
-  <h2 class="section-title">Locked Content 🔒</h2>
-  <div class="locked" id="lockedContent">Click to Unlock Premium Content</div>
-</section>
+  <!-- Floating CTA (point this to your community later) -->
+  <a class="floating" href="#" title="Join the movement">🔥 Join the Hidden Order</a>
 
-<footer>
-  <p>&copy; 2025 Codex Hub</p>
-  <div class="socials">
-    <a href="#"><i class="fab fa-facebook-f"></i></a>
-    <a href="#"><i class="fab fa-instagram"></i></a>
-    <a href="#"><i class="fab fa-twitter"></i></a>
-  </div>
-</footer>
-
-<a href="https://wa.me/254715365500?text=You%20have%20done%20a%20great%20job%2C%20let%20me%20tip%20you" target="_blank" class="whatsapp-btn">
-  <i class="fab fa-whatsapp"></i>
-</a>
-
-<!-- Coil Monetization -->
-<script src="https://cdn.coil.com/popup.js" defer></script>
-
-<script>
-  // Hamburger menu toggle
-  const menuToggle = document.querySelector('.menu-toggle');
-  const navUl = document.querySelector('nav ul');
-  menuToggle.addEventListener('click', ()=>{navUl.classList.toggle('active');});
-
-  // Locked content
-  const locked = document.getElementById('lockedContent');
-  locked.addEventListener('click',()=>{
-    if(confirm("Unlock premium content via Coil?")){
-      locked.innerHTML="Premium Content Unlocked! 🎉";
-      locked.style.border="2px solid #25D366";
-      locked.style.boxShadow="0 0 20px #25D366";
-      locked.style.color="#25D366";
+  <script>
+    // Reveal premium cards for Coil/WM visitors
+    function unlockPremium() {
+      document.querySelectorAll('.locked').forEach(el => {
+        el.classList.remove('locked');
+        el.classList.add('glow');
+      });
     }
-  });
 
-  // Coil auto popup for non-subscribers
-  document.addEventListener('DOMContentLoaded',()=>{
-    if(!window.COIL){
-      const coilDiv = document.createElement('div');
-      coilDiv.id = 'coil-popup';
-      coilDiv.style.position='fixed';
-      coilDiv.style.bottom='20px';
-      coilDiv.style.right='20px';
-      coilDiv.style.padding='1rem 1.5rem';
-      coilDiv.style.background='#facc15';
-      coilDiv.style.color='#111';
-      coilDiv.style.borderRadius='12px';
-      coilDiv.style.cursor='pointer';
-      coilDiv.style.zIndex='9999';
-      coilDiv.innerText='Unlock full premium experience with Coil ⚡';
-      coilDiv.onclick=()=>{window.open('https://coil.com/p/join','_blank');};
-      document.body.appendChild(coilDiv);
+    if (document.monetization) {
+      // Already supported by the browser/extension
+      document.monetization.addEventListener('monetizationstart', unlockPremium);
+      // If payment already started before this script ran
+      if (document.monetization.state === 'started') unlockPremium();
     }
-  });
-</script>
-
+  </script>
 </body>
 </html>
+
