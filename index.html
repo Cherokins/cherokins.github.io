@@ -3,159 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="monetization" content="$ilp.uphold.com/YOUR_COIL_PAYMENT_POINTER">
+    <!-- Uphold Web Monetization (replace with your payment pointer) -->
+    <meta name="monetization" content="$ilp.uphold.com/YOUR_WALLET_ID">
     <title>Global Insights Hub</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            color: #333;
-            background-color: #f9f9f9;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        h1 {
-            color: #2c3e50;
-        }
-        .content-card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .monetization-status {
-            text-align: center;
-            padding: 10px;
-            margin: 20px 0;
-            background: #e8f4f8;
-            border-radius: 5px;
-        }
-        .premium-content {
-            background: #fffaf0;
-            border-left: 4px solid #ff9500;
-            padding: 15px;
-        }
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #7f8c8d;
-            font-size: 0.9em;
-        }
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .wm-active { background: #e0f7fa; padding: 10px; border-left: 4px solid #00acc1; }
+        .fallback-monetization { background: #fff8e1; padding: 15px; margin: 20px 0; text-align: center; }
+        .premium-content { background: #f5f5f5; padding: 15px; margin: 15px 0; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Global Insights Hub</h1>
-        <p>Discover fascinating content from around the world</p>
-        <div class="monetization-status" id="monetization-status">
-            Web Monetization: <span id="wm-status">Checking...</span>
-        </div>
-    </header>
+    <h1>Global Insights Hub</h1>
+    <p>Discover fascinating content from around the world</p>
 
-    <main id="content-container">
-        <!-- Content will be loaded here automatically -->
-        <div class="content-card">
-            <p>Loading today's global insights...</p>
-        </div>
-    </main>
+    <!-- Web Monetization Status -->
+    <div id="wm-status" class="wm-active">
+        Web Monetization: <span id="wm-state">Checking...</span>
+    </div>
 
-    <footer>
-        <p>Content updates automatically | Support with <a href="https://coil.com" target="_blank">Coil</a></p>
-    </footer>
+    <!-- Fallback if WM not supported -->
+    <div id="fallback-monetization" class="fallback-monetization" style="display: none;">
+        <p>Enjoying this content? Support me via:</p>
+        <a href="https://www.buymeacoffee.com/yourpage" target="_blank">
+            <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=yourpage" alt="Buy Me A Coffee">
+        </a>
+        <p>or disable your ad blocker for optional ads.</p>
+    </div>
+
+    <!-- Dynamic Content Loaded Here -->
+    <div id="content-container">
+        <p>Loading today's insights...</p>
+    </div>
+
+    <!-- EthicalAds Fallback (if no WM) -->
+    <div id="ad-container" style="display: none; margin: 20px 0; text-align: center;">
+        <script async src="https://media.ethicalads.io/media/client/ethicalads.min.js"></script>
+        <div data-ea-publisher="your-publisher-id" data-ea-type="image"></div>
+    </div>
 
     <script>
-        // Web Monetization detection
+        // 1. Check Web Monetization Support
         if (document.monetization) {
             document.monetization.addEventListener('monetizationstart', () => {
-                document.getElementById('wm-status').textContent = 'Active (Thank you!)';
-                document.getElementById('monetization-status').style.background = '#e8f8f0';
+                document.getElementById("wm-state").textContent = "Active (Thank you!)";
                 showPremiumContent();
             });
-            
             document.monetization.addEventListener('monetizationstop', () => {
-                document.getElementById('wm-status').textContent = 'Inactive';
-                document.getElementById('monetization-status').style.background = '#e8f4f8';
+                document.getElementById("wm-state").textContent = "Inactive";
+                showFallbackOptions();
             });
         } else {
-            document.getElementById('wm-status').textContent = 'Not supported';
+            document.getElementById("wm-state").textContent = "Not supported";
+            showFallbackOptions();
         }
 
-        // Content loading system
+        // 2. Fallback: Show Ads/Donations if no WM
+        function showFallbackOptions() {
+            document.getElementById("fallback-monetization").style.display = "block";
+            document.getElementById("ad-container").style.display = "block";
+        }
+
+        // 3. Load Dynamic Content (from JSON)
         async function loadContent() {
-            try {
-                // Load content from GitHub (can be updated without changing HTML)
-                const response = await fetch('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/content.json');
-                const data = await response.json();
-                
-                // Get today's date for content selection
-                const today = new Date();
-                const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
-                const contentIndex = dayOfYear % data.content.length;
-                const todayContent = data.content[contentIndex];
-                
-                // Render content
-                const container = document.getElementById('content-container');
-                container.innerHTML = '';
-                
-                // Free content
-                const freeCard = document.createElement('div');
-                freeCard.className = 'content-card';
-                freeCard.innerHTML = `
-                    <h2>${todayContent.title}</h2>
-                    <p>${todayContent.freeContent}</p>
-                    ${todayContent.image ? `<img src="${todayContent.image}" alt="${todayContent.title}" style="max-width:100%; margin:10px 0;">` : ''}
-                `;
-                container.appendChild(freeCard);
-                
-                // Premium content (shown only if monetization is active)
-                if (document.monetization && document.monetization.state === 'started') {
-                    showPremiumContent();
-                }
-                
-            } catch (error) {
-                console.error('Error loading content:', error);
-                document.getElementById('content-container').innerHTML = `
-                    <div class="content-card">
-                        <p>Couldn't load today's content. Please check back later.</p>
-                    </div>
-                `;
-            }
-        }
-        
-        function showPremiumContent() {
-            // This would be enhanced with actual premium content from your JSON
-            const premiumCard = document.createElement('div');
-            premiumCard.className = 'content-card premium-content';
-            premiumCard.innerHTML = `
-                <h2>Premium Insight</h2>
-                <p>Thank you for supporting us with Coil! Here's your exclusive content:</p>
-                <ul id="premium-list"></ul>
-                <p><small>This content is only visible to Web Monetization supporters.</small></p>
+            const response = await fetch('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/content.json');
+            const data = await response.json();
+            const today = new Date().getDay() % data.content.length; // Cycle content daily
+            document.getElementById("content-container").innerHTML = `
+                <h2>${data.content[today].title}</h2>
+                <p>${data.content[today].freeContent}</p>
+                ${data.content[today].image ? `<img src="${data.content[today].image}" width="100%">` : ''}
             `;
-            document.getElementById('content-container').appendChild(premiumCard);
-            
-            // Load additional premium content
-            fetch('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/premium.json')
-                .then(res => res.json())
-                .then(data => {
-                    const today = new Date();
-                    const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
-                    const premiumIndex = dayOfYear % data.premiumContent.length;
-                    const premiumToday = data.premiumContent[premiumIndex];
-                    
-                    document.getElementById('premium-list').innerHTML = premiumToday.items
-                        .map(item => `<li><strong>${item.title}:</strong> ${item.description}</li>`)
-                        .join('');
-                });
         }
-        
-        // Initialize
         loadContent();
     </script>
 </body>
