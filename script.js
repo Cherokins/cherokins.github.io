@@ -1,81 +1,60 @@
-// === Codex of Hidden Knowledge (Endless + Coil Unlock) ===
+const entries = [
+  { text: "In the beginning, the Codex whispered secrets only shadows knew.", type: "free" },
+  { text: "🔮 The moon speaks not in light, but in memory.", type: "free" },
+  { text: "Here lies a hidden law: power bends not to time, but to silence.", type: "locked" },
+  { text: "The rivers remember every name ever spoken upon their shores.", type: "free" },
+  { text: "Beneath the 7th veil lies the first truth. Few dare lift it.", type: "locked" }
+];
 
-// Word pools
-const adjectives = ["silent", "burning", "hidden", "eternal", "forgotten", "shattered", "ancient", "veiled", "iron", "crimson", "hollow", "obsidian", "sacred"];
-const creatures = ["serpent", "raven", "shadow", "wanderer", "oracle", "twin flame", "wolf", "phantom", "scribe", "guardian", "mirror"];
-const verbs = ["guards", "awakens", "consumes", "shatters", "seeks", "binds", "betrays", "remembers", "conceals", "reveals"];
-const objects = ["seal", "gate", "memory", "circle", "crown", "labyrinth", "sword", "mask", "flame", "void", "temple", "oath"];
-const mysteries = ["prophecy", "truth", "dream", "path", "destiny", "curse", "key", "hourglass", "sigil"];
+let index = 0;
+const container = document.getElementById("entries");
 
-// State to track monetization
-let monetized = false;
-
-// Random selector
-function random(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-// Generate a cryptic entry
-function generateEntry() {
-  const templates = [
-    `When the ${random(adjectives)} ${random(creatures)} ${random(verbs)} the ${random(objects)}, the ${random(mysteries)} awakens.`,
-    `Only the ${random(creatures)} of ${random(objects)} knows the ${random(mysteries)}.`,
-    `The ${random(adjectives)} path is guarded by the ${random(creatures)}.`,
-    `To break the ${random(objects)}, sacrifice the ${random(mysteries)}.`,
-    `In the echo of ${random(objects)}, the ${random(creatures)} waits.`,
-    `The ${random(mysteries)} belongs to the ${random(adjectives)} ${random(creatures)}.`
-  ];
-  return templates[Math.floor(Math.random() * templates.length)];
-}
-
-// Create entry element
-function createEntryElement(text, type = "free") {
+// Render one entry
+function renderEntry(entry) {
   const div = document.createElement("div");
-  div.className = `entry ${type}`;
+  div.className = "entry";
 
-  if (type === "locked" && !monetized) {
-    div.innerHTML = `🔒 A secret lies hidden here...`;
+  if (entry.type === "locked") {
+    div.setAttribute("data-text", entry.text);
+    div.textContent = "🔒 Hidden Knowledge (Unlock with Coil)";
+    div.classList.add("locked");
   } else {
-    div.innerHTML = text;
+    div.textContent = entry.text;
   }
 
-  setTimeout(() => div.classList.add("visible"), 100);
-  return div;
+  container.appendChild(div);
 }
 
-// Insert entries
-function insertEntries(count = 10) {
-  const container = document.getElementById("entries");
-  for (let i = 0; i < count; i++) {
-    const text = generateEntry();
-    const type = Math.random() > 0.7 ? "locked" : "free"; // ~30% locked
-    container.appendChild(createEntryElement(text, type));
+// Load more entries (loop endlessly)
+function loadMore() {
+  for (let i = 0; i < 3; i++) {
+    renderEntry(entries[index % entries.length]);
+    index++;
   }
 }
 
-// Unlock previously locked entries if monetization starts
-function unlockEntries() {
-  document.querySelectorAll(".entry.locked").forEach(el => {
-    el.innerHTML = generateEntry(); // reveal with new text
-  });
-}
-
-// Infinite scroll
-window.addEventListener("scroll", () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-    insertEntries(10);
+// Infinite scroll via IntersectionObserver
+const sentinel = document.getElementById("sentinel");
+const observer = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    loadMore();
   }
 });
+observer.observe(sentinel);
 
-// Web Monetization API listener
+// Coil Monetization Unlock
+function checkMonetization() {
+  if (document.monetization && document.monetization.state === "started") {
+    document.querySelectorAll(".entry.locked").forEach(e => {
+      e.classList.remove("locked");
+      e.textContent = e.getAttribute("data-text");
+    });
+  }
+}
+
 if (document.monetization) {
-  document.monetization.addEventListener("monetizationstart", () => {
-    monetized = true;
-    unlockEntries();
-  });
+  document.monetization.addEventListener("monetizationstart", checkMonetization);
 }
 
 // Initial load
-window.onload = () => {
-  insertEntries(20);
-};
+loadMore();
