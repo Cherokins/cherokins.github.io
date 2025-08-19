@@ -1,364 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Global Live Hub — Real-Time Health • Finance • Tech • Beauty</title>
-<meta name="description" content="A single-file, auto-updating international hub: Health, Finance, Tech, Beauty.">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-<style>
-  :root{
-    --bg:#0b0f14; --panel:#10161d; --muted:#a7b0be; --text:#e8edf4; --accent:#67e8f9; --good:#16a34a; --bad:#dc2626; --ring:#1f2a37;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:linear-gradient(180deg,#0a0e13 0%,#0d1218 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-  header{position:sticky;top:0;z-index:50;background:rgba(11,15,20,.7);backdrop-filter:blur(10px);border-bottom:1px solid #1f2937}
-  .wrap{max-width:1200px;margin:0 auto;padding:16px}
-  .brand{display:flex;align-items:center;gap:12px}
-  .logo{height:36px;width:36px;border-radius:12px;background:radial-gradient(circle at 30% 30%,#67e8f9,transparent 40%),radial-gradient(circle at 70% 70%,#a78bfa,transparent 45%),#0ea5e9;border:1px solid #334155;box-shadow:0 0 0 4px rgba(103,232,249,.08)}
-  .title{font-weight:700;letter-spacing:.2px}
-  .sub{color:var(--muted);font-size:.9rem}
-  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-  .card{grid-column:span 12;background:var(--panel);border:1px solid #1f2937;border-radius:18px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-  @media(min-width:900px){.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-8{grid-column:span 8}}
-  .section-title{display:flex;align-items:center;gap:10px;margin:0 0 10px}
-  .chip{font-size:.8rem;color:#0b0f14;background:linear-gradient(90deg,#67e8f9,#a78bfa);padding:6px 10px;border-radius:999px;font-weight:700}
-  .list{display:grid;gap:12px}
-  .item{background:#0c131b;border:1px solid #1f2937;border-radius:14px;padding:12px;transition:transform .12s ease}
-  .item:hover{transform:translateY(-2px)}
-  .item h4{margin:0 0 6px;font-size:1rem;line-height:1.2}
-  .muted{color:var(--muted);font-size:.9rem}
-  .pill{display:inline-flex;gap:6px;align-items:center;padding:2px 8px;border-radius:999px;border:1px solid #263243;background:#0b1219;font-size:.75rem;color:#b7c2d3}
-  .row{display:flex;gap:10px;flex-wrap:wrap}
-  .price{font-weight:700}
-  .up{color:var(--good)} .down{color:var(--bad)}
-  .footer{color:#8b95a7;text-align:center;padding:30px 16px}
-  .btn{display:inline-flex;align-items:center;gap:8px;background:#0b1219;border:1px solid #273246;border-radius:12px;padding:10px 12px;color:#cfe7ff;font-weight:600}
-  .btn:hover{border-color:#335075}
-  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0}
-  .tab{padding:8px 12px;border-radius:999px;border:1px solid #263243;color:#b7c2d3;cursor:pointer}
-  .tab.active{background:linear-gradient(90deg,#67e8f9,#a78bfa);color:#04121a;border-color:transparent}
-  .hide{display:none}
-  .search{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #263243;background:#0b1219;color:#e8edf4}
-  .badges{display:flex;gap:8px;flex-wrap:wrap}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Hub – Health | Finance | Tech | Beauty | Weather</title>
+  <style>
+    body {
+      margin: 0; font-family: Arial, sans-serif; background:#121212; color:#eee;
+    }
+    header {
+      position: sticky; top:0; background:#1e1e1e; padding:10px; 
+      display:flex; justify-content:space-between; align-items:center;
+      border-bottom:1px solid #333;
+    }
+    header h1 { margin:0; font-size:18px; }
+    header .right { display:flex; gap:10px; align-items:center; }
+    nav {
+      display:flex; justify-content:center; gap:15px; padding:10px; background:#222;
+    }
+    nav button {
+      background:#333; color:#eee; border:none; padding:8px 15px; 
+      border-radius:20px; cursor:pointer; transition:0.3s;
+    }
+    nav button.active, nav button:hover { background:#4cafef; color:#000; }
+    section { display:none; padding:20px; }
+    section.active { display:block; }
+    .card {
+      background:#1e1e1e; padding:15px; margin:10px 0; border-radius:10px;
+      box-shadow:0 2px 5px rgba(0,0,0,0.4);
+    }
+    .ads {
+      margin:15px 0; padding:15px; background:#333; border-radius:10px;
+      text-align:center; font-size:14px; color:#aaa;
+    }
+    .btn {
+      display:inline-block; margin-top:10px; padding:8px 15px; 
+      border-radius:6px; text-decoration:none; background:#4cafef; color:#000;
+    }
+    footer {
+      background:#1e1e1e; text-align:center; padding:20px; margin-top:30px;
+      font-size:14px; color:#aaa;
+    }
+    input, button.signup {
+      padding:10px; margin:5px; border:none; border-radius:5px;
+    }
+    button.signup { background:#4cafef; color:#000; cursor:pointer; }
+  </style>
 </head>
 <body>
   <header>
-    <div class="wrap">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <div class="title">Global Live Hub</div>
-          <div class="sub">Auto-updating Health • Finance • Tech • Beauty — zero maintenance.</div>
-        </div>
-        <div style="margin-left:auto" class="row">
-          <span class="pill" id="clock">--:--</span>
-          <button class="btn" id="refreshBtn" title="Force refresh">↻ Refresh</button>
-        </div>
-      </div>
-      <div style="margin-top:12px" class="badges">
-        <span class="pill">Keyless APIs</span>
-        <span class="pill">Static • GitHub Pages</span>
-        <span class="pill">International</span>
-      </div>
+    <h1>🌍 Global Hub</h1>
+    <div class="right">
+      <span id="clock"></span>
+      <button onclick="refreshAll()">🔄 Refresh</button>
     </div>
   </header>
 
-  <main class="wrap" style="padding-top:20px">
-    <!-- Tabs -->
-    <div class="tabs" id="tabs">
-      <div class="tab active" data-panel="health">Health</div>
-      <div class="tab" data-panel="finance">Finance</div>
-      <div class="tab" data-panel="tech">Tech</div>
-      <div class="tab" data-panel="beauty">Beauty</div>
-      <div class="tab" data-panel="weather">Weather</div>
-    </div>
+  <nav>
+    <button onclick="showTab('health')" class="active">Health</button>
+    <button onclick="showTab('finance')">Finance</button>
+    <button onclick="showTab('tech')">Tech</button>
+    <button onclick="showTab('beauty')">Beauty</button>
+    <button onclick="showTab('weather')">Weather</button>
+  </nav>
 
-    <!-- Health -->
-    <section id="health" class="grid" style="margin-top:12px">
-      <div class="card col-8">
-        <h3 class="section-title"><span class="chip">Health — Global “In the news”</span></h3>
-        <div id="healthNews" class="list"></div>
-      </div>
-      <div class="card col-4">
-        <h3 class="section-title"><span class="chip">Quick Facts</span></h3>
-        <div id="healthFacts" class="list"></div>
-      </div>
-    </section>
+  <!-- Health -->
+  <section id="health" class="active">
+    <h2>🩺 Health</h2>
+    <div id="healthContent"></div>
+    <div class="ads">[Ad Slot – Insert Google AdSense here]</div>
+  </section>
 
-    <!-- Finance -->
-    <section id="finance" class="grid hide" style="margin-top:12px">
-      <div class="card col-8">
-        <h3 class="section-title"><span class="chip">Crypto Markets (CoinGecko)</span></h3>
-        <div id="crypto" class="list"></div>
-      </div>
-      <div class="card col-4">
-        <h3 class="section-title"><span class="chip">FX Snapshot (exchangerate.host)</span></h3>
-        <div id="fx" class="list"></div>
-      </div>
-    </section>
+  <!-- Finance -->
+  <section id="finance">
+    <h2>💰 Finance</h2>
+    <div id="financeContent"></div>
+    <a href="#" class="btn">💳 Learn More (Affiliate)</a>
+    <div class="ads">[Ad Slot – Finance Banner]</div>
+  </section>
 
-    <!-- Tech -->
-    <section id="tech" class="grid hide" style="margin-top:12px">
-      <div class="card col-8">
-        <h3 class="section-title"><span class="chip">Tech Trends (Hacker News)</span></h3>
-        <div id="techNews" class="list"></div>
-      </div>
-      <div class="card col-4">
-        <h3 class="section-title"><span class="chip">Trending Keywords</span></h3>
-        <div id="techTags" class="row"></div>
-      </div>
-    </section>
+  <!-- Tech -->
+  <section id="tech">
+    <h2>💻 Tech</h2>
+    <div id="techContent"></div>
+    <a href="#" class="btn">🛒 Shop Tech (Affiliate)</a>
+    <div class="ads">[Ad Slot – Tech Banner]</div>
+  </section>
 
-    <!-- Beauty -->
-    <section id="beauty" class="grid hide" style="margin-top:12px">
-      <div class="card col-8">
-        <h3 class="section-title"><span class="chip">Beauty & Lifestyle (Wikipedia most-read)</span></h3>
-        <div id="beautyNews" class="list"></div>
-      </div>
-      <div class="card col-4">
-        <h3 class="section-title"><span class="chip">Tips (Auto-generated)</span></h3>
-        <div id="beautyTips" class="list"></div>
-      </div>
-    </section>
+  <!-- Beauty -->
+  <section id="beauty">
+    <h2>💄 Beauty</h2>
+    <div id="beautyContent"></div>
+    <a href="#" class="btn">✨ Discover More (Affiliate)</a>
+    <div class="ads">[Ad Slot – Beauty Banner]</div>
+  </section>
 
-    <!-- Weather -->
-    <section id="weather" class="grid hide" style="margin-top:12px">
-      <div class="card col-6">
-        <h3 class="section-title"><span class="chip">Your Weather (Open-Meteo)</span></h3>
-        <div class="row">
-          <input id="city" class="search" placeholder="Enter city (e.g., Nairobi, London, New York)">
-          <button class="btn" id="weatherBtn">Get Forecast</button>
-        </div>
-        <div id="weatherBox" class="list" style="margin-top:12px"></div>
-      </div>
-      <div class="card col-6">
-        <h3 class="section-title"><span class="chip">Sunrise • Sunset</span></h3>
-        <div id="astro" class="list"></div>
-      </div>
-    </section>
+  <!-- Weather -->
+  <section id="weather">
+    <h2>⛅ Weather</h2>
+    <input id="city" type="text" placeholder="Enter city..." />
+    <button onclick="loadWeather()">Check</button>
+    <div id="weatherContent"></div>
+  </section>
 
-    <!-- Search across sections -->
-    <section class="card" style="margin-top:16px">
-      <h3 class="section-title"><span class="chip">Quick Search</span></h3>
-      <input id="q" class="search" placeholder="Search all loaded items (titles & snippets)…">
-      <div id="results" class="list" style="margin-top:12px"></div>
-    </section>
-  </main>
+  <!-- Email Signup -->
+  <section>
+    <h2>📧 Stay Updated</h2>
+    <input type="email" placeholder="Your email" />
+    <button class="signup">Subscribe</button>
+    <p style="font-size:12px;color:#777;">(Connect this form to Mailchimp/ConvertKit)</p>
+  </section>
 
-  <footer class="footer">
-    Built to run on GitHub Pages • One file • Auto-updates with public APIs • No keys.
+  <!-- Donations -->
+  <section>
+    <h2>🙏 Support Us</h2>
+    <a href="https://buymeacoffee.com/" class="btn">☕ Buy Me a Coffee</a>
+  </section>
+
+  <footer>
+    &copy; 2025 Global Hub | Fresh info, real time, worldwide 🌍
   </footer>
 
 <script>
-/* ========= Utilities ========= */
-const $ = s => document.querySelector(s);
-const el = (tag, attrs={}, html='') => {
-  const e=document.createElement(tag);
-  Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));
-  if(html) e.innerHTML=html;
-  return e;
-};
-const fmt = n => new Intl.NumberFormat().format(n);
-const ago = ts => {
-  const d = (Date.now()-new Date(ts))/1000;
-  if(d<60) return `${Math.floor(d)}s ago`;
-  if(d<3600) return `${Math.floor(d/60)}m ago`;
-  if(d<86400) return `${Math.floor(d/3600)}h ago`;
-  return `${Math.floor(d/86400)}d ago`;
-};
-const setClock = () => { const now=new Date(); $("#clock").textContent = now.toLocaleString(); };
-setInterval(setClock,1000); setClock();
-
-function tabs(){
-  const tabs = [...document.querySelectorAll(".tab")];
-  tabs.forEach(t => t.addEventListener("click", () => {
-    tabs.forEach(x=>x.classList.remove("active"));
-    document.querySelectorAll("main section").forEach(s=>s.classList.add("hide"));
-    t.classList.add("active");
-    document.getElementById(t.dataset.panel).classList.remove("hide");
-    window.scrollTo({top:0,behavior:"smooth"});
-  }));
-}
-tabs();
-
-/* ========= HEALTH (Wikipedia Featured Feed) =========
-   Keyless, CORS-enabled. Pulls “news” items for today. */
-async function loadHealth(){
-  try{
-    const d = new Date();
-    const yyyy = d.getUTCFullYear();
-    const mm   = String(d.getUTCMonth()+1).padStart(2,'0');
-    const dd   = String(d.getUTCDate()).padStart(2,'0');
-    const url = `https://en.wikipedia.org/api/rest_v1/feed/featured/${yyyy}/${mm}/${dd}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    const items = (data?.news||[]).slice(0,8);
-    $("#healthNews").innerHTML = items.map(n=>{
-      const story = n?.links?.[0] || {};
-      const title = n?.story || "Update";
-      const href  = story?.url || "https://en.wikipedia.org/wiki/Main_Page";
-      return `<div class="item">
-        <h4>${title}</h4>
-        <div class="muted">From Wikipedia “In the news”.</div>
-        <a class="pill" href="${href}" target="_blank" rel="noopener">Read source →</a>
-      </div>`;
-    }).join("") || `<div class="muted">No items available right now.</div>`;
-
-    $("#healthFacts").innerHTML = (data?.onthisday?.selected||[]).slice(0,6).map(x=>{
-      const t = x?.text || "On this day";
-      const link=x?.pages?.[0]?.content_urls?.desktop?.page;
-      return `<div class="item"><div class="muted">${t}</div>${link?`<a class="pill" target="_blank" rel="noopener" href="${link}">Learn more</a>`:''}</div>`;
-    }).join("");
-  }catch(e){
-    $("#healthNews").innerHTML = `<div class="muted">⚠️ Could not load health feed.</div>`;
+  // Tabs
+  function showTab(id) {
+    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+    document.querySelector(`button[onclick="showTab('${id}')"]`).classList.add("active");
+    document.getElementById(id).classList.add("active");
   }
-}
 
-/* ========= FINANCE =========
-   Crypto (CoinGecko) + FX (exchangerate.host) — both keyless. */
-async function loadFinance(){
-  try{
-    const cg = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=8&page=1&sparkline=false').then(r=>r.json());
-    $("#crypto").innerHTML = cg.map(c => {
-      const cls = c.price_change_percentage_24h >= 0 ? 'up' : 'down';
-      return `<div class="item">
-        <h4>${c.name} <span class="muted">(${c.symbol.toUpperCase()})</span></h4>
-        <div class="row">
-          <span class="price">$${fmt(c.current_price)}</span>
-          <span class="${cls}">${c.price_change_percentage_24h?.toFixed(2)}%</span>
-          <span class="pill">MC: $${fmt(c.market_cap)}</span>
-        </div>
-        <a class="pill" target="_blank" rel="noopener" href="https://www.coingecko.com/en/coins/${c.id}">Details</a>
-      </div>`;
-    }).join("");
+  // Clock
+  setInterval(()=>{
+    document.getElementById("clock").innerText=new Date().toLocaleTimeString();
+  },1000);
 
-    const fx = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=EUR,GBP,KES,NGN,INR,JPY').then(r=>r.json());
-    const base = fx.base || 'USD';
-    $("#fx").innerHTML = Object.entries(fx.rates||{}).map(([k,v])=>(
-      `<div class="item"><h4>1 ${base} → ${k}</h4><div class="muted">${v.toFixed(4)}</div></div>`
-    )).join("");
-  }catch(e){
-    $("#crypto").innerHTML = `<div class="muted">⚠️ Finance data unavailable.</div>`;
+  // Load Health (Wikipedia In the News)
+  async function loadHealth(){
+    try{
+      let r=await fetch("https://en.wikipedia.org/api/rest_v1/feed/featured/2025/08/19");
+      let d=await r.json();
+      let html=d.tfa.extract? `<div class='card'>${d.tfa.extract}</div>`:"";
+      document.getElementById("healthContent").innerHTML=html;
+    }catch{document.getElementById("healthContent").innerHTML="⚠️ Unable to load health news";}
   }
-}
 
-/* ========= TECH (Hacker News Algolia) =========
-   Keyless, CORS-enabled. */
-async function loadTech(){
-  try{
-    const url = 'https://hn.algolia.com/api/v1/search_by_date?tags=story&query=AI%20OR%20technology%20OR%20software';
-    const data = await fetch(url).then(r=>r.json());
-    const hits = (data.hits||[]).slice(0,12);
-    $("#techNews").innerHTML = hits.map(h=>{
-      const title = h.title || 'Story';
-      const link  = h.url || (`https://news.ycombinator.com/item?id=${h.objectID}`);
-      return `<div class="item">
-        <h4>${title}</h4>
-        <div class="row">
-          <span class="pill">▲ ${h.points||0}</span>
-          <span class="pill">💬 ${h.num_comments||0}</span>
-          <span class="pill">${ago(h.created_at)}</span>
-        </div>
-        <a class="pill" target="_blank" rel="noopener" href="${link}">Open</a>
-      </div>`;
-    }).join("");
-
-    // quick tag cloud from top words in titles
-    const text = hits.map(h=>h.title||'').join(' ').toLowerCase();
-    const freq = {};
-    text.replace(/[^a-z0-9\s]/g,'').split(/\s+/).forEach(w=>{
-      if(w.length<4) return;
-      freq[w]=(freq[w]||0)+1;
-    });
-    const top = Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,20);
-    $("#techTags").innerHTML = top.map(([w,c])=>`<span class="pill">${w} • ${c}</span>`).join("");
-  }catch(e){
-    $("#techNews").innerHTML = `<div class="muted">⚠️ Could not load tech feed.</div>`;
+  // Load Finance (Crypto + FX)
+  async function loadFinance(){
+    try{
+      let c=await (await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=3&page=1")).json();
+      let fx=await (await fetch("https://api.exchangerate.host/latest?base=USD&symbols=EUR,GBP")).json();
+      let html=c.map(x=>`<div class='card'>${x.name}: $${x.current_price}</div>`).join("");
+      html+=`<div class='card'>USD→EUR: ${fx.rates.EUR}, USD→GBP: ${fx.rates.GBP}</div>`;
+      document.getElementById("financeContent").innerHTML=html;
+    }catch{document.getElementById("financeContent").innerHTML="⚠️ Finance data failed";}
   }
-}
 
-/* ========= BEAUTY (Wikipedia Most-Read — filter lifestyle/beauty terms) ========= */
-async function loadBeauty(){
-  try{
-    // Most-read on English Wikipedia yesterday (UTC)
-    const d = new Date(Date.now()-86400000);
-    const yyyy=d.getUTCFullYear(), mm=String(d.getUTCMonth()+1).padStart(2,'0'), dd=String(d.getUTCDate()).padStart(2,'0');
-    const url = `https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/${yyyy}/${mm}/${dd}`;
-    const data = await fetch(url).then(r=>r.json());
-    const words = /(beauty|fashion|model|makeup|cosmetic|hair|skin|lifestyle|wellness|fitness|brand|perfume|esthetic)/i;
-    const pages = (data?.items?.[0]?.articles||[]).filter(a=>words.test(a.article)).slice(0,8);
-    $("#beautyNews").innerHTML = (pages.length?pages:[...(data?.items?.[0]?.articles||[])].slice(0,8)).map(p=>{
-      const title = p.article.replace(/_/g,' ');
-      const link  = `https://en.wikipedia.org/wiki/${encodeURIComponent(p.article)}`;
-      return `<div class="item">
-        <h4>${title}</h4>
-        <div class="muted">Est. views: ${fmt(p.views||0)}</div>
-        <a class="pill" target="_blank" rel="noopener" href="${link}">Read</a>
-      </div>`;
-    }).join("");
-
-    // Light client-side “tips” (non-medical, general).
-    const tips = [
-      "Hydrate: 6–8 glasses water/day helps skin look plumper.",
-      "Sunscreen daily (broad-spectrum SPF 30+) to slow photoaging.",
-      "Gentle cleanse → moisturize → SPF AM; cleanse → treat → moisturize PM.",
-      "For hair: focus conditioner on lengths/ends, not the scalp.",
-      "Patch-test new products for 24–48h to avoid reactions."
-    ];
-    $("#beautyTips").innerHTML = tips.map(t=>`<div class="item"><div class="muted">${t}</div></div>`).join("");
-  }catch(e){
-    $("#beautyNews").innerHTML = `<div class="muted">⚠️ Could not load beauty feed.</div>`;
+  // Load Tech (Hacker News top 3)
+  async function loadTech(){
+    try{
+      let r=await fetch("https://hn.algolia.com/api/v1/search?query=tech&tags=story&hitsPerPage=3");
+      let d=await r.json();
+      let html=d.hits.map(x=>`<div class='card'><a href='${x.url}' target='_blank'>${x.title}</a></div>`).join("");
+      document.getElementById("techContent").innerHTML=html;
+    }catch{document.getElementById("techContent").innerHTML="⚠️ Tech feed unavailable";}
   }
-}
 
-/* ========= WEATHER (Open-Meteo Geocoding + Forecast) ========= */
-async function loadWeather(city){
-  try{
-    const geo = await fetch(`https://geocoding-api.open-meteo.com/v1/search?count=1&name=${encodeURIComponent(city)}`).then(r=>r.json());
-    const loc = geo?.results?.[0];
-    if(!loc){ $("#weatherBox").innerHTML = `<div class="muted">No results for “${city}”.</div>`; return; }
-    const { latitude, longitude, timezone, name, country } = loc;
-    const f = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,precipitation_probability&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&forecast_days=5&timezone=${encodeURIComponent(timezone)}`).then(r=>r.json());
-    $("#weatherBox").innerHTML = (f?.daily?.time||[]).map((t,i)=>{
-      const hi = f.daily.temperature_2m_max[i], lo=f.daily.temperature_2m_min[i];
-      return `<div class="item"><h4>${t}</h4><div class="row"><span class="pill">Hi ${Math.round(hi)}°</span><span class="pill">Lo ${Math.round(lo)}°</span></div></div>`;
-    }).join("");
-    $("#astro").innerHTML = (f?.daily?.time||[]).map((t,i)=>{
-      const sr = f.daily.sunrise[i].split('T')[1], ss=f.daily.sunset[i].split('T')[1];
-      return `<div class="item"><h4>${t}</h4><div class="row"><span class="pill">Sunrise ${sr}</span><span class="pill">Sunset ${ss}</span></div></div>`;
-    }).join("");
-  }catch(e){
-    $("#weatherBox").innerHTML = `<div class="muted">⚠️ Weather unavailable.</div>`;
+  // Load Beauty (Wikipedia Most Read)
+  async function loadBeauty(){
+    try{
+      let r=await fetch("https://en.wikipedia.org/api/rest_v1/feed/most-read/2025/08/19");
+      let d=await r.json();
+      let html=d.articles.slice(0,3).map(x=>`<div class='card'>${x.normalizedtitle}</div>`).join("");
+      html+=`<div class='card'>💡 Tip: Stay hydrated for glowing skin!</div>`;
+      document.getElementById("beautyContent").innerHTML=html;
+    }catch{document.getElementById("beautyContent").innerHTML="⚠️ Beauty info not available";}
   }
-}
-$("#weatherBtn").addEventListener("click", ()=> loadWeather($("#city").value||"Nairobi"));
 
-/* ========= Global Search (client-side across loaded items) ========= */
-function globalSearch(){
-  const q = ($("#q").value||'').trim().toLowerCase();
-  const results = [];
-  document.querySelectorAll("#healthNews .item, #crypto .item, #techNews .item, #beautyNews .item").forEach(node=>{
-    const title = node.querySelector("h4")?.textContent||"";
-    const text  = node.querySelector(".muted")?.textContent||"";
-    if((title+text).toLowerCase().includes(q)) results.push({title, html:node.outerHTML});
-  });
-  $("#results").innerHTML = q ? results.map(r=>r.html).join("") : "";
-}
-$("#q").addEventListener("input", globalSearch);
+  // Load Weather
+  async function loadWeather(){
+    let city=document.getElementById("city").value;
+    if(!city) return;
+    try{
+      let geo=await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}`)).json();
+      if(!geo.results){document.getElementById("weatherContent").innerHTML="City not found";return;}
+      let {latitude,longitude}=geo.results[0];
+      let w=await (await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min&timezone=auto`)).json();
+      let html=w.daily.time.map((t,i)=>`<div class='card'>${t}: ${w.daily.temperature_2m_min[i]}°C - ${w.daily.temperature_2m_max[i]}°C</div>`).join("");
+      document.getElementById("weatherContent").innerHTML=html;
+    }catch{document.getElementById("weatherContent").innerHTML="⚠️ Weather API failed";}
+  }
 
-/* ========= Refresh & Auto-refresh ========= */
-async function refreshAll(){
-  await Promise.all([loadHealth(), loadFinance(), loadTech(), loadBeauty()]);
-}
-$("#refreshBtn").addEventListener("click", refreshAll);
-refreshAll();                 // initial load
-setInterval(refreshAll, 30*60*1000); // auto refresh every 30 min
+  function refreshAll(){ loadHealth(); loadFinance(); loadTech(); loadBeauty(); }
+  refreshAll();
 </script>
 </body>
 </html>
+
 
