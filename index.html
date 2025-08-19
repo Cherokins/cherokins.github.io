@@ -1,199 +1,911 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Global Hub – Health | Finance | Tech | Beauty | Weather</title>
-  <style>
-    body {
-      margin: 0; font-family: Arial, sans-serif; background:#121212; color:#eee;
-    }
-    header {
-      position: sticky; top:0; background:#1e1e1e; padding:10px; 
-      display:flex; justify-content:space-between; align-items:center;
-      border-bottom:1px solid #333;
-    }
-    header h1 { margin:0; font-size:18px; }
-    header .right { display:flex; gap:10px; align-items:center; }
-    nav {
-      display:flex; justify-content:center; gap:15px; padding:10px; background:#222;
-    }
-    nav button {
-      background:#333; color:#eee; border:none; padding:8px 15px; 
-      border-radius:20px; cursor:pointer; transition:0.3s;
-    }
-    nav button.active, nav button:hover { background:#4cafef; color:#000; }
-    section { display:none; padding:20px; }
-    section.active { display:block; }
-    .card {
-      background:#1e1e1e; padding:15px; margin:10px 0; border-radius:10px;
-      box-shadow:0 2px 5px rgba(0,0,0,0.4);
-    }
-    .ads {
-      margin:15px 0; padding:15px; background:#333; border-radius:10px;
-      text-align:center; font-size:14px; color:#aaa;
-    }
-    .btn {
-      display:inline-block; margin-top:10px; padding:8px 15px; 
-      border-radius:6px; text-decoration:none; background:#4cafef; color:#000;
-    }
-    footer {
-      background:#1e1e1e; text-align:center; padding:20px; margin-top:30px;
-      font-size:14px; color:#aaa;
-    }
-    input, button.signup {
-      padding:10px; margin:5px; border:none; border-radius:5px;
-    }
-    button.signup { background:#4cafef; color:#000; cursor:pointer; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Digest - News Dashboard</title>
+    <style>
+        :root {
+            --primary: #7e57c2;
+            --secondary: #2196f3;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --card-hover: #2a2a2a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent: #ff4081;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #f44336;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--card-bg);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid #333;
+            background-color: #2a2a2a;
+            color: var(--text-primary);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .clock {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .refresh-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Tabs Navigation */
+        .tabs-container {
+            margin: 1rem 0;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+        }
+
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tabs {
+            display: inline-flex;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+        }
+
+        .tab {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Main Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-title {
+            margin: 1.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: transform 0.3s, background-color 0.3s;
+            box-shadow: var(--shadow);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background-color: var(--card-hover);
+        }
+
+        .card-header {
+            padding: 1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        .card-footer {
+            padding: 1rem;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Ad Placeholders */
+        .ad-placeholder {
+            background: linear-gradient(45deg, #2c2c2c, #3c3c3c);
+            padding: 2rem;
+            text-align: center;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            border: 1px dashed #555;
+        }
+
+        .ad-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        /* Email Signup */
+        .email-signup {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .email-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .email-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid #333;
+            background-color: #2a2a2a;
+            color: var(--text-primary);
+        }
+
+        /* Support Section */
+        .support-section {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        /* Loading and Error States */
+        .loading {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .error {
+            padding: 1rem;
+            background-color: rgba(244, 67, 54, 0.1);
+            border-left: 4px solid var(--error);
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-container {
+                max-width: 100%;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Weather specific styles */
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .weather-day {
+            text-align: center;
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+        }
+
+        /* Crypto specific styles */
+        .crypto-list {
+            list-style: none;
+        }
+
+        .crypto-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        /* Beauty tips */
+        .beauty-tips {
+            margin-top: 1rem;
+        }
+
+        .tip {
+            padding: 0.5rem;
+            background-color: rgba(255, 64, 129, 0.1);
+            border-radius: var(--border-radius);
+            margin-bottom: 0.5rem;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>🌍 Global Hub</h1>
-    <div class="right">
-      <span id="clock"></span>
-      <button onclick="refreshAll()">🔄 Refresh</button>
-    </div>
-  </header>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Daily Digest</div>
+                <div class="search-container">
+                    <input type="text" class="search-box" placeholder="Search across all news..." id="searchInput">
+                </div>
+                <div class="header-controls">
+                    <div class="clock" id="clock">00:00:00</div>
+                    <button class="refresh-btn" id="refreshBtn">
+                        <span>Refresh</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
 
-  <nav>
-    <button onclick="showTab('health')" class="active">Health</button>
-    <button onclick="showTab('finance')">Finance</button>
-    <button onclick="showTab('tech')">Tech</button>
-    <button onclick="showTab('beauty')">Beauty</button>
-    <button onclick="showTab('weather')">Weather</button>
-  </nav>
+    <main class="container">
+        <div class="tabs-container">
+            <div class="tabs">
+                <div class="tab active" data-tab="health">Health</div>
+                <div class="tab" data-tab="finance">Finance</div>
+                <div class="tab" data-tab="tech">Tech</div>
+                <div class="tab" data-tab="beauty">Beauty</div>
+                <div class="tab" data-tab="weather">Weather</div>
+            </div>
+        </div>
 
-  <!-- Health -->
-  <section id="health" class="active">
-    <h2>🩺 Health</h2>
-    <div id="healthContent"></div>
-    <div class="ads">[Ad Slot – Insert Google AdSense here]</div>
-  </section>
+        <!-- Ad Placeholder -->
+        <div class="ad-placeholder">
+            <p class="ad-text">Advertisement Space - Replace with Google AdSense</p>
+        </div>
 
-  <!-- Finance -->
-  <section id="finance">
-    <h2>💰 Finance</h2>
-    <div id="financeContent"></div>
-    <a href="#" class="btn">💳 Learn More (Affiliate)</a>
-    <div class="ads">[Ad Slot – Finance Banner]</div>
-  </section>
+        <!-- Health Section -->
+        <div class="tab-content active" id="health-content">
+            <h2 class="section-title">Health News</h2>
+            <div class="cards-container" id="health-cards">
+                <div class="loading">Loading health news...</div>
+            </div>
+        </div>
 
-  <!-- Tech -->
-  <section id="tech">
-    <h2>💻 Tech</h2>
-    <div id="techContent"></div>
-    <a href="#" class="btn">🛒 Shop Tech (Affiliate)</a>
-    <div class="ads">[Ad Slot – Tech Banner]</div>
-  </section>
+        <!-- Finance Section -->
+        <div class="tab-content" id="finance-content">
+            <h2 class="section-title">Financial Markets</h2>
+            <div class="cards-container" id="finance-cards">
+                <div class="loading">Loading financial data...</div>
+            </div>
 
-  <!-- Beauty -->
-  <section id="beauty">
-    <h2>💄 Beauty</h2>
-    <div id="beautyContent"></div>
-    <a href="#" class="btn">✨ Discover More (Affiliate)</a>
-    <div class="ads">[Ad Slot – Beauty Banner]</div>
-  </section>
+            <!-- Affiliate Ready Products -->
+            <h2 class="section-title">Financial Products</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Investment Platform</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Start investing with as little as $5. Commission-free trading.</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary affiliate-btn">Learn More</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Budgeting App</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Take control of your finances with our easy-to-use budgeting tool.</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary affiliate-btn">Shop Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <!-- Weather -->
-  <section id="weather">
-    <h2>⛅ Weather</h2>
-    <input id="city" type="text" placeholder="Enter city..." />
-    <button onclick="loadWeather()">Check</button>
-    <div id="weatherContent"></div>
-  </section>
+        <!-- Tech Section -->
+        <div class="tab-content" id="tech-content">
+            <h2 class="section-title">Tech News</h2>
+            <div class="cards-container" id="tech-cards">
+                <div class="loading">Loading tech news...</div>
+            </div>
 
-  <!-- Email Signup -->
-  <section>
-    <h2>📧 Stay Updated</h2>
-    <input type="email" placeholder="Your email" />
-    <button class="signup">Subscribe</button>
-    <p style="font-size:12px;color:#777;">(Connect this form to Mailchimp/ConvertKit)</p>
-  </section>
+            <!-- Affiliate Ready Products -->
+            <h2 class="section-title">Tech Products</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Wireless Earbuds</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Premium sound quality with noise cancellation technology.</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary affiliate-btn">Shop Now</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Smart Home Hub</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Control your entire home with voice commands.</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary affiliate-btn">Learn More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <!-- Donations -->
-  <section>
-    <h2>🙏 Support Us</h2>
-    <a href="https://buymeacoffee.com/" class="btn">☕ Buy Me a Coffee</a>
-  </section>
+        <!-- Beauty Section -->
+        <div class="tab-content" id="beauty-content">
+            <h2 class="section-title">Beauty & Fashion</h2>
+            <div class="cards-container" id="beauty-cards">
+                <div class="loading">Loading beauty content...</div>
+            </div>
 
-  <footer>
-    &copy; 2025 Global Hub | Fresh info, real time, worldwide 🌍
-  </footer>
+            <!-- Beauty Tips -->
+            <h2 class="section-title">Beauty Tips</h2>
+            <div class="beauty-tips">
+                <div class="tip">Always remove makeup before going to bed to keep your skin healthy.</div>
+                <div class="tip">Drink plenty of water to maintain skin hydration.</div>
+                <div class="tip">Use sunscreen daily, even on cloudy days, to protect your skin from UV damage.</div>
+            </div>
 
-<script>
-  // Tabs
-  function showTab(id) {
-    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-    document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-    document.querySelector(`button[onclick="showTab('${id}')"]`).classList.add("active");
-    document.getElementById(id).classList.add("active");
-  }
+            <!-- Affiliate Ready Products -->
+            <h2 class="section-title">Beauty Products</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Skincare Set</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Complete skincare routine for glowing skin. 100% natural ingredients.</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary affiliate-btn">Shop Now</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Makeup Kit</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Professional makeup kit with all essentials for a perfect look.</p>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary affiliate-btn">Learn More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  // Clock
-  setInterval(()=>{
-    document.getElementById("clock").innerText=new Date().toLocaleTimeString();
-  },1000);
+        <!-- Weather Section -->
+        <div class="tab-content" id="weather-content">
+            <h2 class="section-title">Weather Forecast</h2>
+            <div class="weather-search">
+                <input type="text" id="cityInput" class="search-box" placeholder="Enter city name">
+                <button id="searchWeather" class="btn btn-primary" style="margin-top: 0.5rem;">Search</button>
+            </div>
+            <div class="cards-container" id="weather-cards">
+                <div class="loading">Enter a city to get weather information</div>
+            </div>
+        </div>
 
-  // Load Health (Wikipedia In the News)
-  async function loadHealth(){
-    try{
-      let r=await fetch("https://en.wikipedia.org/api/rest_v1/feed/featured/2025/08/19");
-      let d=await r.json();
-      let html=d.tfa.extract? `<div class='card'>${d.tfa.extract}</div>`:"";
-      document.getElementById("healthContent").innerHTML=html;
-    }catch{document.getElementById("healthContent").innerHTML="⚠️ Unable to load health news";}
-  }
+        <!-- Email Signup Form -->
+        <div class="email-signup">
+            <h2>Stay Updated</h2>
+            <p>Subscribe to our newsletter for daily digest of news and updates</p>
+            <form class="email-form" id="emailForm">
+                <input type="email" class="email-input" placeholder="Your email address" required>
+                <button type="submit" class="btn btn-accent">Subscribe</button>
+            </form>
+            <p class="ad-text" style="margin-top: 1rem;">We'll use this to send you daily updates (Replace with Mailchimp/ConvertKit integration)</p>
+        </div>
 
-  // Load Finance (Crypto + FX)
-  async function loadFinance(){
-    try{
-      let c=await (await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=3&page=1")).json();
-      let fx=await (await fetch("https://api.exchangerate.host/latest?base=USD&symbols=EUR,GBP")).json();
-      let html=c.map(x=>`<div class='card'>${x.name}: $${x.current_price}</div>`).join("");
-      html+=`<div class='card'>USD→EUR: ${fx.rates.EUR}, USD→GBP: ${fx.rates.GBP}</div>`;
-      document.getElementById("financeContent").innerHTML=html;
-    }catch{document.getElementById("financeContent").innerHTML="⚠️ Finance data failed";}
-  }
+        <!-- Support Us Section -->
+        <div class="support-section">
+            <p>Enjoying our content? Support our work!</p>
+            <button class="btn btn-secondary" id="supportBtn">Support Us</button>
+        </div>
 
-  // Load Tech (Hacker News top 3)
-  async function loadTech(){
-    try{
-      let r=await fetch("https://hn.algolia.com/api/v1/search?query=tech&tags=story&hitsPerPage=3");
-      let d=await r.json();
-      let html=d.hits.map(x=>`<div class='card'><a href='${x.url}' target='_blank'>${x.title}</a></div>`).join("");
-      document.getElementById("techContent").innerHTML=html;
-    }catch{document.getElementById("techContent").innerHTML="⚠️ Tech feed unavailable";}
-  }
+        <!-- Another Ad Placeholder -->
+        <div class="ad-placeholder">
+            <p class="ad-text">Advertisement Space - Replace with Google AdSense</p>
+        </div>
+    </main>
 
-  // Load Beauty (Wikipedia Most Read)
-  async function loadBeauty(){
-    try{
-      let r=await fetch("https://en.wikipedia.org/api/rest_v1/feed/most-read/2025/08/19");
-      let d=await r.json();
-      let html=d.articles.slice(0,3).map(x=>`<div class='card'>${x.normalizedtitle}</div>`).join("");
-      html+=`<div class='card'>💡 Tip: Stay hydrated for glowing skin!</div>`;
-      document.getElementById("beautyContent").innerHTML=html;
-    }catch{document.getElementById("beautyContent").innerHTML="⚠️ Beauty info not available";}
-  }
+    <script>
+        // Global variables
+        let currentTab = 'health';
+        let allNewsItems = [];
+        const refreshInterval = 30 * 60 * 1000; // 30 minutes
 
-  // Load Weather
-  async function loadWeather(){
-    let city=document.getElementById("city").value;
-    if(!city) return;
-    try{
-      let geo=await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}`)).json();
-      if(!geo.results){document.getElementById("weatherContent").innerHTML="City not found";return;}
-      let {latitude,longitude}=geo.results[0];
-      let w=await (await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min&timezone=auto`)).json();
-      let html=w.daily.time.map((t,i)=>`<div class='card'>${t}: ${w.daily.temperature_2m_min[i]}°C - ${w.daily.temperature_2m_max[i]}°C</div>`).join("");
-      document.getElementById("weatherContent").innerHTML=html;
-    }catch{document.getElementById("weatherContent").innerHTML="⚠️ Weather API failed";}
-  }
+        // DOM Elements
+        const clockElement = document.getElementById('clock');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const searchInput = document.getElementById('searchInput');
+        const cityInput = document.getElementById('cityInput');
+        const searchWeatherBtn = document.getElementById('searchWeather');
+        const emailForm = document.getElementById('emailForm');
+        const supportBtn = document.getElementById('supportBtn');
+        const affiliateBtns = document.querySelectorAll('.affiliate-btn');
 
-  function refreshAll(){ loadHealth(); loadFinance(); loadTech(); loadBeauty(); }
-  refreshAll();
-</script>
+        // Initialize clock
+        function updateClock() {
+            const now = new Date();
+            clockElement.textContent = now.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Tab switching
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Update active tab
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                tabContents.forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tabId}-content`).classList.add('active');
+                
+                currentTab = tabId;
+                
+                // Load data if needed
+                if (tabId === 'weather' && cityInput.value) {
+                    fetchWeather(cityInput.value);
+                }
+            });
+        });
+
+        // Search functionality
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            document.querySelectorAll('.card').forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+
+        // Refresh button
+        refreshBtn.addEventListener('click', () => {
+            refreshAllData();
+        });
+
+        // Auto-refresh data every 30 minutes
+        setInterval(refreshAllData, refreshInterval);
+
+        // Email form submission
+        emailForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for subscribing! (In a real implementation, this would connect to Mailchimp/ConvertKit)');
+            emailForm.reset();
+        });
+
+        // Support button
+        supportBtn.addEventListener('click', () => {
+            window.open('https://buymeacoffee.com/placeholder', '_blank');
+        });
+
+        // Affiliate buttons
+        affiliateBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                alert('This would redirect to an affiliate product page');
+            });
+        });
+
+        // Weather search
+        searchWeatherBtn.addEventListener('click', () => {
+            if (cityInput.value.trim()) {
+                fetchWeather(cityInput.value.trim());
+            }
+        });
+
+        // Fetch Health News from Wikipedia
+        async function fetchHealthNews() {
+            try {
+                const response = await fetch('https://en.wikipedia.org/api/rest_v1/feed/featured/' + 
+                    new Date().toISOString().split('T')[0]);
+                const data = await response.json();
+                
+                const newsContainer = document.getElementById('health-cards');
+                newsContainer.innerHTML = '';
+                
+                // In the news
+                if (data.news && data.news.length > 0) {
+                    data.news.slice(0, 4).forEach(item => {
+                        const card = createNewsCard(item.story, item.links[0].url);
+                        newsContainer.appendChild(card);
+                        allNewsItems.push({text: item.story, element: card});
+                    });
+                }
+                
+                // On this day
+                if (data.onthisday && data.onthisday.length > 0) {
+                    data.onthisday.slice(0, 2).forEach(item => {
+                        const card = createNewsCard(`${item.text} (${item.year})`, item.pages[0].content_urls.desktop.page);
+                        newsContainer.appendChild(card);
+                        allNewsItems.push({text: item.text, element: card});
+                    });
+                }
+            } catch (error) {
+                document.getElementById('health-cards').innerHTML = 
+                    '<div class="error">Failed to load health news. Please try again later.</div>';
+                console.error('Error fetching health news:', error);
+            }
+        }
+
+        // Fetch Finance Data
+        async function fetchFinanceData() {
+            try {
+                // Fetch crypto data
+                const cryptoResponse = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1&sparkline=false');
+                const cryptoData = await cryptoResponse.json();
+                
+                // Fetch FX data
+                const fxResponse = await fetch('https://api.exchangerate.host/latest?base=USD');
+                const fxData = await fxResponse.json();
+                
+                const financeContainer = document.getElementById('finance-cards');
+                financeContainer.innerHTML = '';
+                
+                // Create crypto cards
+                cryptoData.forEach(coin => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <h3 class="card-title">${coin.name} (${coin.symbol.toUpperCase()})</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Price: $${coin.current_price}</p>
+                            <p>24h Change: <span style="color: ${coin.price_change_percentage_24h >= 0 ? 'var(--success)' : 'var(--error)'}">
+                                ${coin.price_change_percentage_24h}%</span></p>
+                            <p>Market Cap: $${coin.market_cap.toLocaleString()}</p>
+                        </div>
+                    `;
+                    financeContainer.appendChild(card);
+                });
+                
+                // Create FX card
+                const fxCard = document.createElement('div');
+                fxCard.className = 'card';
+                fxCard.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="card-title">Exchange Rates (USD Base)</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>EUR: ${fxData.rates.EUR}</p>
+                        <p>GBP: ${fxData.rates.GBP}</p>
+                        <p>JPY: ${fxData.rates.JPY}</p>
+                        <p>CAD: ${fxData.rates.CAD}</p>
+                        <p>AUD: ${fxData.rates.AUD}</p>
+                    </div>
+                `;
+                financeContainer.appendChild(fxCard);
+                
+            } catch (error) {
+                document.getElementById('finance-cards').innerHTML = 
+                    '<div class="error">Failed to load financial data. Please try again later.</div>';
+                console.error('Error fetching finance data:', error);
+            }
+        }
+
+        // Fetch Tech News from Hacker News
+        async function fetchTechNews() {
+            try {
+                const response = await fetch('https://hn.algolia.com/api/v1/search?tags=front_page&hitsPerPage=10');
+                const data = await response.json();
+                
+                const techContainer = document.getElementById('tech-cards');
+                techContainer.innerHTML = '';
+                
+                data.hits.forEach(item => {
+                    const card = createNewsCard(item.title, item.url || `https://news.ycombinator.com/item?id=${item.objectID}`);
+                    techContainer.appendChild(card);
+                    allNewsItems.push({text: item.title, element: card});
+                });
+            } catch (error) {
+                document.getElementById('tech-cards').innerHTML = 
+                    '<div class="error">Failed to load tech news. Please try again later.</div>';
+                console.error('Error fetching tech news:', error);
+            }
+        }
+
+        // Fetch Beauty Content from Wikipedia
+        async function fetchBeautyContent() {
+            try {
+                // Try to fetch most viewed pages
+                const response = await fetch('https://en.wikipedia.org/api/rest_v1/feed/featured/' + 
+                    new Date().toISOString().split('T')[0]);
+                const data = await response.json();
+                
+                const beautyContainer = document.getElementById('beauty-cards');
+                beautyContainer.innerHTML = '';
+                
+                // Filter for beauty/fashion related content (simulated)
+                const beautyKeywords = ['fashion', 'beauty', 'cosmetic', 'makeup', 'skincare', 'style', 'trend'];
+                
+                if (data.mostread && data.mostread.articles) {
+                    const beautyArticles = data.mostread.articles.filter(article => 
+                        beautyKeywords.some(keyword => 
+                            article.title.toLowerCase().includes(keyword) || 
+                            article.extract.toLowerCase().includes(keyword)
+                        )
+                    ).slice(0, 4);
+                    
+                    if (beautyArticles.length > 0) {
+                        beautyArticles.forEach(article => {
+                            const card = createNewsCard(article.title, article.content_urls.desktop.page, article.extract);
+                            beautyContainer.appendChild(card);
+                            allNewsItems.push({text: article.title, element: card});
+                        });
+                    } else {
+                        // Fallback if no beauty articles found
+                        const fallbackArticles = data.mostread.articles.slice(0, 3);
+                        fallbackArticles.forEach(article => {
+                            const card = createNewsCard(article.title, article.content_urls.desktop.page, article.extract);
+                            beautyContainer.appendChild(card);
+                            allNewsItems.push({text: article.title, element: card});
+                        });
+                    }
+                }
+            } catch (error) {
+                document.getElementById('beauty-cards').innerHTML = 
+                    '<div class="error">Failed to load beauty content. Using fallback tips.</div>';
+                console.error('Error fetching beauty content:', error);
+            }
+        }
+
+        // Fetch Weather Data
+        async function fetchWeather(city) {
+            try {
+                // First, geocode the city to get coordinates
+                const geocodeResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`);
+                const geocodeData = await geocodeResponse.json();
+                
+                if (!geocodeData.results || geocodeData.results.length === 0) {
+                    throw new Error('City not found');
+                }
+                
+                const { latitude, longitude, name, country } = geocodeData.results[0];
+                
+                // Then, get the weather forecast
+                const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max&timezone=auto`);
+                const weatherData = await weatherResponse.json();
+                
+                const weatherContainer = document.getElementById('weather-cards');
+                weatherContainer.innerHTML = '';
+                
+                // Create current weather card
+                const currentCard = document.createElement('div');
+                currentCard.className = 'card';
+                currentCard.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="card-title">${name}, ${country} - 5-Day Forecast</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="weather-grid">
+                `;
+                
+                // Add forecast for each day
+                for (let i = 0; i < 5; i++) {
+                    currentCard.querySelector('.weather-grid').innerHTML += `
+                        <div class="weather-day">
+                            <p><strong>${new Date(weatherData.daily.time[i]).toLocaleDateString('en', {weekday: 'short'})}</strong></p>
+                            <p>${weatherData.daily.temperature_2m_max[i]}° / ${weatherData.daily.temperature_2m_min[i]}°</p>
+                            <p>Precip: ${weatherData.daily.precipitation_sum[i]}mm</p>
+                            <p>Wind: ${weatherData.daily.windspeed_10m_max[i]} km/h</p>
+                        </div>
+                    `;
+                }
+                
+                currentCard.querySelector('.card-body').innerHTML += '</div></div>';
+                weatherContainer.appendChild(currentCard);
+                
+            } catch (error) {
+                document.getElementById('weather-cards').innerHTML = 
+                    '<div class="error">Failed to load weather data. Please check the city name and try again.</div>';
+                console.error('Error fetching weather data:', error);
+            }
+        }
+
+        // Helper function to create news cards
+        function createNewsCard(title, url, description) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            let desc = description || 'Click to read more about this story';
+            if (desc.length > 150) desc = desc.substring(0, 150) + '...';
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <h3 class="card-title">${title}</h3>
+                </div>
+                <div class="card-body">
+                    <p>${desc}</p>
+                </div>
+                <div class="card-footer">
+                    <a href="${url}" target="_blank" class="btn btn-primary">Read More</a>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Refresh all data
+        function refreshAllData() {
+            refreshBtn.disabled = true;
+            refreshBtn.innerHTML = 'Refreshing...';
+            
+            Promise.all([
+                fetchHealthNews(),
+                fetchFinanceData(),
+                fetchTechNews(),
+                fetchBeautyContent()
+            ]).then(() => {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = 'Refresh';
+                if (currentTab === 'weather' && cityInput.value) {
+                    fetchWeather(cityInput.value);
+                }
+            });
+        }
+
+        // Bonus: AI-generated content (placeholder implementation)
+        async function fetchAIContent(topic) {
+            try {
+                // This is a placeholder for the AI endpoint
+                // const response = await fetch(`https://YOUR-WORKER.example.com/daily?topic=${topic}`);
+                // const data = await response.json();
+                // return data.html;
+                
+                // Simulating a failed request for now
+                throw new Error('Endpoint not configured');
+            } catch (error) {
+                // Fail silently as per requirements
+                return null;
+            }
+        }
+
+        // Initialize the application
+        function initApp() {
+            // Load initial data
+            refreshAllData();
+            
+            // Set up weather search on Enter key
+            cityInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && cityInput.value.trim()) {
+                    fetchWeather(cityInput.value.trim());
+                }
+            });
+        }
+
+        // Start the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
 </body>
 </html>
 
