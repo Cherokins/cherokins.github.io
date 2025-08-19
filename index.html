@@ -1,667 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="monetization" content="$ilp.uphold.com/MggmnFEyQVWO">
-    <title>Daily Content Hub</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Global Live Hub — Real-Time Health • Finance • Tech • Beauty</title>
+<meta name="description" content="A single-file, auto-updating international hub: Health, Finance, Tech, Beauty.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-        :root {
-            --bg-primary: #0f0f23;
-            --bg-secondary: #1a1a2e;
-            --text-primary: #ffffff;
-            --text-secondary: #b3b3cc;
-            --accent: #6c5ce7;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --shadow: rgba(0, 0, 0, 0.3);
-        }
-
-        [data-theme="light"] {
-            --bg-primary: #f8f9fa;
-            --bg-secondary: #ffffff;
-            --text-primary: #2d3436;
-            --text-secondary: #636e72;
-            --accent: #6c5ce7;
-            --glass-bg: rgba(0, 0, 0, 0.05);
-            --glass-border: rgba(0, 0, 0, 0.1);
-            --shadow: rgba(0, 0, 0, 0.1);
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-            color: var(--text-primary);
-            min-height: 100vh;
-            transition: all 0.3s ease;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .header h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            background: linear-gradient(45deg, var(--accent), #fd79a8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .header p {
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            animation: fadeInUp 1s ease-out 0.2s both;
-        }
-
-        .controls {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            display: flex;
-            gap: 1rem;
-            z-index: 100;
-        }
-
-        .glass-btn {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 50px;
-            padding: 0.8rem 1.5rem;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .glass-btn:hover {
-            background: var(--glass-bg);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px var(--shadow);
-        }
-
-        .theme-toggle {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .theme-toggle:hover {
-            transform: rotate(180deg) scale(1.1);
-            box-shadow: 0 5px 20px var(--shadow);
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .content-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            animation: slideInUp 0.8s ease-out;
-        }
-
-        .content-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent), #fd79a8, #fdcb6e);
-            animation: shimmer 3s ease-in-out infinite;
-        }
-
-        .content-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px var(--shadow);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: linear-gradient(45deg, var(--accent), #fd79a8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .card-content {
-            line-height: 1.6;
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        .quote {
-            font-style: italic;
-            position: relative;
-            padding-left: 1rem;
-            border-left: 3px solid var(--accent);
-        }
-
-        .quote-author {
-            margin-top: 1rem;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .status-bar {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 1rem 2rem;
-            text-align: center;
-            margin-top: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .status-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .floating-orbs {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            background: linear-gradient(45deg, rgba(108, 92, 231, 0.3), rgba(253, 121, 168, 0.3));
-            animation: float 20s infinite linear;
-        }
-
-        .orb:nth-child(1) {
-            width: 80px;
-            height: 80px;
-            top: 20%;
-            animation-delay: 0s;
-        }
-
-        .orb:nth-child(2) {
-            width: 60px;
-            height: 60px;
-            top: 60%;
-            animation-delay: -7s;
-        }
-
-        .orb:nth-child(3) {
-            width: 100px;
-            height: 100px;
-            top: 80%;
-            animation-delay: -14s;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes shimmer {
-            0%, 100% { transform: translateX(-100%); }
-            50% { transform: translateX(100%); }
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateX(-100px) rotate(0deg);
-            }
-            100% {
-                transform: translateX(calc(100vw + 100px)) rotate(360deg);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .monetization-status {
-            animation: pulse 2s infinite;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .controls {
-                position: relative;
-                top: 0;
-                right: 0;
-                justify-content: center;
-                margin-bottom: 2rem;
-            }
-
-            .main-content {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .status-bar {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .orb {
-                display: none;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .content-card {
-                padding: 1.5rem;
-            }
-
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .card-title {
-                font-size: 1.3rem;
-            }
-
-            .card-content {
-                font-size: 1rem;
-            }
-        }
-    </style>
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#10161d; --muted:#a7b0be; --text:#e8edf4; --accent:#67e8f9; --good:#16a34a; --bad:#dc2626; --ring:#1f2a37;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:linear-gradient(180deg,#0a0e13 0%,#0d1218 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  header{position:sticky;top:0;z-index:50;background:rgba(11,15,20,.7);backdrop-filter:blur(10px);border-bottom:1px solid #1f2937}
+  .wrap{max-width:1200px;margin:0 auto;padding:16px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{height:36px;width:36px;border-radius:12px;background:radial-gradient(circle at 30% 30%,#67e8f9,transparent 40%),radial-gradient(circle at 70% 70%,#a78bfa,transparent 45%),#0ea5e9;border:1px solid #334155;box-shadow:0 0 0 4px rgba(103,232,249,.08)}
+  .title{font-weight:700;letter-spacing:.2px}
+  .sub{color:var(--muted);font-size:.9rem}
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+  .card{grid-column:span 12;background:var(--panel);border:1px solid #1f2937;border-radius:18px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+  @media(min-width:900px){.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-8{grid-column:span 8}}
+  .section-title{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+  .chip{font-size:.8rem;color:#0b0f14;background:linear-gradient(90deg,#67e8f9,#a78bfa);padding:6px 10px;border-radius:999px;font-weight:700}
+  .list{display:grid;gap:12px}
+  .item{background:#0c131b;border:1px solid #1f2937;border-radius:14px;padding:12px;transition:transform .12s ease}
+  .item:hover{transform:translateY(-2px)}
+  .item h4{margin:0 0 6px;font-size:1rem;line-height:1.2}
+  .muted{color:var(--muted);font-size:.9rem}
+  .pill{display:inline-flex;gap:6px;align-items:center;padding:2px 8px;border-radius:999px;border:1px solid #263243;background:#0b1219;font-size:.75rem;color:#b7c2d3}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .price{font-weight:700}
+  .up{color:var(--good)} .down{color:var(--bad)}
+  .footer{color:#8b95a7;text-align:center;padding:30px 16px}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:#0b1219;border:1px solid #273246;border-radius:12px;padding:10px 12px;color:#cfe7ff;font-weight:600}
+  .btn:hover{border-color:#335075}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0}
+  .tab{padding:8px 12px;border-radius:999px;border:1px solid #263243;color:#b7c2d3;cursor:pointer}
+  .tab.active{background:linear-gradient(90deg,#67e8f9,#a78bfa);color:#04121a;border-color:transparent}
+  .hide{display:none}
+  .search{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #263243;background:#0b1219;color:#e8edf4}
+  .badges{display:flex;gap:8px;flex-wrap:wrap}
+</style>
 </head>
 <body>
-    <div class="floating-orbs">
-        <div class="orb"></div>
-        <div class="orb"></div>
-        <div class="orb"></div>
+  <header>
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div class="title">Global Live Hub</div>
+          <div class="sub">Auto-updating Health • Finance • Tech • Beauty — zero maintenance.</div>
+        </div>
+        <div style="margin-left:auto" class="row">
+          <span class="pill" id="clock">--:--</span>
+          <button class="btn" id="refreshBtn" title="Force refresh">↻ Refresh</button>
+        </div>
+      </div>
+      <div style="margin-top:12px" class="badges">
+        <span class="pill">Keyless APIs</span>
+        <span class="pill">Static • GitHub Pages</span>
+        <span class="pill">International</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" style="padding-top:20px">
+    <!-- Tabs -->
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-panel="health">Health</div>
+      <div class="tab" data-panel="finance">Finance</div>
+      <div class="tab" data-panel="tech">Tech</div>
+      <div class="tab" data-panel="beauty">Beauty</div>
+      <div class="tab" data-panel="weather">Weather</div>
     </div>
 
-    <div class="container">
-        <div class="controls">
-            <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-            <button class="glass-btn" id="monetizationBtn" onclick="handleMonetization()">
-                <span id="monetizationText">💎 Support</span>
-            </button>
-        </div>
+    <!-- Health -->
+    <section id="health" class="grid" style="margin-top:12px">
+      <div class="card col-8">
+        <h3 class="section-title"><span class="chip">Health — Global “In the news”</span></h3>
+        <div id="healthNews" class="list"></div>
+      </div>
+      <div class="card col-4">
+        <h3 class="section-title"><span class="chip">Quick Facts</span></h3>
+        <div id="healthFacts" class="list"></div>
+      </div>
+    </section>
 
-        <div class="header">
-            <h1>Daily Discovery</h1>
-            <p>Fresh content curated for curious minds</p>
-        </div>
+    <!-- Finance -->
+    <section id="finance" class="grid hide" style="margin-top:12px">
+      <div class="card col-8">
+        <h3 class="section-title"><span class="chip">Crypto Markets (CoinGecko)</span></h3>
+        <div id="crypto" class="list"></div>
+      </div>
+      <div class="card col-4">
+        <h3 class="section-title"><span class="chip">FX Snapshot (exchangerate.host)</span></h3>
+        <div id="fx" class="list"></div>
+      </div>
+    </section>
 
-        <div class="main-content" id="contentContainer">
-            <!-- Content will be injected here -->
-        </div>
-
-        <div class="status-bar">
-            <div class="status-item">
-                <span>📅</span>
-                <span id="currentDate"></span>
-            </div>
-            <div class="status-item">
-                <span>🔄</span>
-                <span>Auto-rotates daily</span>
-            </div>
-            <div class="status-item monetization-status">
-                <span>💰</span>
-                <span id="monetizationStatus">Web Monetization Ready</span>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Content database organized by categories
-        const contentData = {
-            techFacts: [
-                {
-                    title: "🚀 Tech Innovation",
-                    content: "The first computer bug was an actual bug - a moth trapped in a Harvard Mark II computer in 1947. Grace Hopper, the operator who found it, taped the moth into the computer's logbook and wrote 'First actual case of bug being found.'"
-                },
-                {
-                    title: "🚀 Tech Innovation", 
-                    content: "There are more possible games of chess than atoms in the observable universe. The number of possible chess games is estimated at 10^120, while there are only about 10^80 atoms in the observable universe."
-                },
-                {
-                    title: "🚀 Tech Innovation",
-                    content: "The first 1GB hard drive, IBM 3380, was released in 1980 and cost $40,000 ($140,000 in today's money). It was the size of a refrigerator and weighed 550 pounds."
-                },
-                {
-                    title: "🚀 Tech Innovation",
-                    content: "WiFi was invented by accident in 1990 when Australian scientists were trying to detect black holes. The technology they developed for radio astronomy became the foundation for wireless internet."
-                },
-                {
-                    title: "🚀 Tech Innovation",
-                    content: "The '@' symbol was chosen for email addresses because it was the only preposition available on the keyboard, and Ray Tomlinson needed something to separate the user name from the computer name."
-                }
-            ],
-            quotes: [
-                {
-                    title: "💭 Daily Wisdom",
-                    content: "The only way to do great work is to love what you do. If you haven't found it yet, keep looking. Don't settle.",
-                    author: "Steve Jobs"
-                },
-                {
-                    title: "💭 Daily Wisdom",
-                    content: "Innovation distinguishes between a leader and a follower. The desktop metaphor was a revolutionary way to make technology accessible to everyone.",
-                    author: "Steve Jobs"
-                },
-                {
-                    title: "💭 Daily Wisdom", 
-                    content: "The future belongs to those who believe in the beauty of their dreams. Every great achievement was once considered impossible.",
-                    author: "Eleanor Roosevelt"
-                },
-                {
-                    title: "💭 Daily Wisdom",
-                    content: "Success is not final, failure is not fatal: it is the courage to continue that counts. Persistence beats resistance always.",
-                    author: "Winston Churchill"
-                },
-                {
-                    title: "💭 Daily Wisdom",
-                    content: "Be yourself; everyone else is already taken. Authenticity is the daily practice of letting go of who we think we're supposed to be.",
-                    author: "Oscar Wilde"
-                }
-            ],
-            scienceFacts: [
-                {
-                    title: "🔬 Science Discovery",
-                    content: "Octopuses have three hearts and blue blood. Two hearts pump blood to the gills, while the third pumps blood to the rest of the body. Their blue blood comes from copper-based hemocyanin instead of iron-based hemoglobin."
-                },
-                {
-                    title: "🔬 Science Discovery",
-                    content: "A day on Venus is longer than its year. Venus rotates so slowly that one Venus day (243 Earth days) is longer than one Venus year (225 Earth days)."
-                },
-                {
-                    title: "🔬 Science Discovery",
-                    content: "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly edible. Its low moisture content and acidic pH create a hostile environment for bacteria."
-                },
-                {
-                    title: "🔬 Science Discovery", 
-                    content: "Your brain uses about 20% of your body's total energy, despite being only 2% of your body weight. It consumes roughly 12 watts of power - about the same as a dim light bulb."
-                },
-                {
-                    title: "🔬 Science Discovery",
-                    content: "Bananas are radioactive due to their high potassium content. You'd need to eat 10 million bananas at once to die from radiation poisoning - but you'd die from potassium overdose first."
-                }
-            ],
-            historyFacts: [
-                {
-                    title: "📜 History Insight",
-                    content: "The Great Wall of China isn't visible from space with the naked eye, contrary to popular belief. This myth was debunked by astronauts who confirmed that many human-made structures are more visible than the wall."
-                },
-                {
-                    title: "📜 History Insight",
-                    content: "Cleopatra lived closer in time to the moon landing (1969) than to the construction of the Great Pyramid of Giza. The pyramid was built around 2580 BC, while Cleopatra lived from 69-30 BC."
-                },
-                {
-                    title: "📜 History Insight",
-                    content: "The shortest war in history lasted only 38-45 minutes. The Anglo-Zanzibar War of 1896 ended when the Sultan's palace was bombarded and his flag shot down."
-                },
-                {
-                    title: "📜 History Insight",
-                    content: "Oxford University is older than the Aztec Empire. Oxford was founded around 1096, while the Aztec Empire was established in 1345."
-                },
-                {
-                    title: "📜 History Insight",
-                    content: "The ancient Romans used urine as mouthwash because they believed it whitened teeth. The ammonia in urine does have mild cleaning properties, though we don't recommend this method today."
-                }
-            ]
-        };
-
-        // Initialize theme based on system preference
-        function initializeTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            const theme = savedTheme || systemTheme;
-            
-            document.documentElement.setAttribute('data-theme', theme);
-            updateThemeIcon(theme);
-        }
-
-        // Toggle between dark and light themes
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-        }
-
-        // Update theme toggle icon
-        function updateThemeIcon(theme) {
-            const themeToggle = document.querySelector('.theme-toggle');
-            themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
-        }
-
-        // Get day-based index for content rotation
-        function getDayBasedIndex(arrayLength) {
-            const today = new Date();
-            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
-            return dayOfYear % arrayLength;
-        }
-
-        // Render daily content
-        function renderDailyContent() {
-            const container = document.getElementById('contentContainer');
-            const categories = Object.keys(contentData);
-            
-            container.innerHTML = '';
-
-            categories.forEach((category, index) => {
-                const items = contentData[category];
-                const selectedIndex = getDayBasedIndex(items.length);
-                const item = items[selectedIndex];
-                
-                const card = document.createElement('div');
-                card.className = 'content-card';
-                card.style.animationDelay = `${index * 0.2}s`;
-                
-                let contentHTML = '';
-                if (item.author) {
-                    // Quote format
-                    contentHTML = `
-                        <div class="quote">${item.content}</div>
-                        <div class="quote-author">— ${item.author}</div>
-                    `;
-                } else {
-                    // Fact format
-                    contentHTML = `<div>${item.content}</div>`;
-                }
-                
-                card.innerHTML = `
-                    <div class="card-header">
-                        <div class="card-icon">${getIconForCategory(category)}</div>
-                        <div class="card-title">${item.title}</div>
-                    </div>
-                    <div class="card-content">
-                        ${contentHTML}
-                    </div>
-                `;
-                
-                container.appendChild(card);
-            });
-        }
-
-        // Get appropriate icon for content category
-        function getIconForCategory(category) {
-            const icons = {
-                techFacts: '💻',
-                quotes: '💭', 
-                scienceFacts: '🔬',
-                historyFacts: '📜'
-            };
-            return icons[category] || '✨';
-        }
-
-        // Handle web monetization and fallback
-        function handleMonetization() {
-            // Check if web monetization is active
-            if (document.monetization && document.monetization.state === 'started') {
-                alert('💚 Web Monetization is active! Thank you for your support!');
-            } else {
-                // Fallback for browsers without web monetization
-                const isSupported = confirm(
-                    '💎 Support this content!\n\n' +
-                    'Web Monetization is not detected in your browser.\n' +
-                    'Would you like to learn more about supporting content creators?'
-                );
-                
-                if (isSupported) {
-                    window.open('https://webmonetization.org/', '_blank');
-                }
-            }
-        }
-
-        // Update monetization status
-        function updateMonetizationStatus() {
-            const statusElement = document.getElementById('monetizationStatus');
-            const btnElement = document.getElementById('monetizationText');
-            
-            if (document.monetization) {
-                document.monetization.addEventListener('monetizationstart', () => {
-                    statusElement.textContent = 'Monetization Active ✓';
-                    btnElement.textContent = '💚 Thanks!';
-                });
-                
-                document.monetization.addEventListener('monetizationstop', () => {
-                    statusElement.textContent = 'Monetization Stopped';
-                    btnElement.textContent = '💎 Support';
-                });
-            } else {
-                statusElement.textContent = 'Monetization Not Supported';
-            }
-        }
-
-        // Update current date display
-        function updateDate() {
-            const dateElement = document.getElementById('currentDate');
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            };
-            dateElement.textContent = new Date().toLocaleDateString('en-US', options);
-        }
-
-        // Listen for system theme changes
-        function setupThemeListener() {
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-                if (!localStorage.getItem('theme')) {
-                    const newTheme = e.matches ? 'dark' : 'light';
-                    document.documentElement.setAttribute('data-theme', newTheme);
-                    updateThemeIcon(newTheme);
-                }
-            });
-        }
-
-        // Initialize the application
-        function initialize() {
-            initializeTheme();
-            setupThemeListener();
-            renderDailyContent();
-            updateDate();
-            updateMonetizationStatus();
-            
-            // Update date every minute
-            setInterval(updateDate, 60000);
-        }
-
-        // Start the application when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initialize);
-    </script>
-</body>
-</html>
-
-
-
-
+    <!-- Tech -->
+    <section id="tech" class="grid hide" style="margin-top:12px">
+      <div class="card col-8">
+        <h3 class="section-title"><span class="chip">Tech Trends (Hacker News)</span></h3>
+        <div id="techNews" class="list"></div>
+      </div>
+      <div class="card col-4">
+        <h3 class="section-title"><span class="chip">Trending Keywords</span></h3>
+        <div id="techTags" class="row"></div>
+      </div>
+    </section>
